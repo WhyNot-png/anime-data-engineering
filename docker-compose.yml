@@ -1,0 +1,13 @@
+services:
+  jupyter:
+    build: .
+    ports:
+      - "8888:8888"
+    volumes:
+      - .:/app
+      - ${HOME}/.kaggle:/root/.kaggle:ro
+    environment:
+      KAGGLE_DATASET: ${KAGGLE_DATASET:-sazzadsiddiquelikhon/myanimelist-anime-database-july-2025}
+      RAW_DATA_DIR: ${RAW_DATA_DIR:-data/raw}
+      PROCESSED_DATA_DIR: ${PROCESSED_DATA_DIR:-data/processed}
+      DATABASE_URL: ${DATABASE_URL:-sqlite:///data/processed/anime.db}
