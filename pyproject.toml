@@ -25,11 +25,23 @@ notebooks = ["jupyterlab>=4.2,<5"]
 rg = "research_graph.cli:app"
 
 [dependency-groups]
+benchmark = [
+    "myst-parser>=4,<5",
+    "nikola>=8.3,<9",
+    "pelican[markdown]>=4.11,<5",
+    "sphinx>=8,<9",
+]
 dev = [
   "pytest>=8,<10", "pytest-cov>=6,<8", "mypy>=1.18,<2",
   "ruff>=0.14,<1", "pre-commit>=4,<5", "pandas-stubs>=2.2,<3",
   # Preserve and test the pre-existing CSV/Parquet/SQLite pipeline.
   "pandas>=2.2,<3", "pyarrow>=17,<22", "SQLAlchemy>=2,<3",
+]
+docs = [
+    "latex2mathml>=3.78,<4",
+    "mkdocs>=1.6,<2",
+    "mkdocs-material>=9.6,<10",
+    "nox>=2025,<2027",
 ]
 
 [tool.hatch.build.targets.wheel]
@@ -38,6 +50,7 @@ packages = ["src/research_graph"]
 [tool.ruff]
 target-version = "py312"
 line-length = 100
+extend-exclude = [".cache", "site"]
 
 [tool.ruff.lint]
 select = ["E4", "E7", "E9", "F", "I", "UP", "B", "SIM", "PTH"]
