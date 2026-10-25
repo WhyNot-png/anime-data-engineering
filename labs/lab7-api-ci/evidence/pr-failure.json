@@ -1,0 +1,10 @@
+{
+  "pull_request": "https://github.com/WhyNot-png/anime-data-engineering/pull/3",
+  "failed_commit": "dfab1d9c670c774c7d7668612acc1bb4cd24f5a9",
+  "failed_run": "https://github.com/WhyNot-png/anime-data-engineering/actions/runs/40244404795",
+  "failed_job": "API PostgreSQL tests",
+  "conclusion": "failure",
+  "annotation": "Process completed with exit code 1.",
+  "local_reproduction": "1 failed, 40 passed; expected 418 instead of actual 201",
+  "note": "Exact assertion output is from local reproduction; anonymous GitHub UI requires sign-in to see full runner logs."
+}
