@@ -33,3 +33,6 @@ _build/
 .cache/
 .nox/
 docs/generated/
+
+# Generated results page; rebuilt with fresh version metadata
+docs/results.md
