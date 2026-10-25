@@ -15,7 +15,7 @@ async def make_task(client, owner_id, **fields):
 
 async def test_01_create_user_201(client):
     response = await client.post("/users", json={"email": "new@example.com", "name": "New"})
-    assert response.status_code == 418  # Intentional failure: assignment 7 step 8.
+    assert response.status_code == 201
     assert response.json()["email"] == "new@example.com"
     assert response.json()["id"] > 0
 

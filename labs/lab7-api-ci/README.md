@@ -139,7 +139,22 @@ contents:read. Docker login получает токен через stdin, а н�
 
 ## 6. Реальная проверка «красный PR → исправление → merge»
 
-Доказательства будут заполнены только реальными запусками; результаты не имитируются.
+Создан [PR №3](https://github.com/WhyNot-png/anime-data-engineering/pull/3).
+Первый коммит `dfab1d9c` намеренно ожидал 418 вместо 201 только в
+`test_01_create_user_201`. [CI pull_request 40244404795](https://github.com/WhyNot-png/anime-data-engineering/actions/runs/40244404795)
+реально завершился Failure: job `API PostgreSQL tests` вернул exit code 1,
+качество и lint прошли, build пропущен. На PR публикация также запрещена отдельным if,
+поэтому один этот скриншот не доказывает, что причиной пропуска build был только needs.
+
+![Намеренно упавший pipeline PR](screenshots/pipeline-failure.svg)
+
+[Протокол CI](evidence/pr-failure.json) и
+[локальное воспроизведение той же ошибки](evidence/intentional-failure-local.txt):
+`assert 201 == 418`, 1 failed, 40 passed. Полный runner log в анонимном интерфейсе
+GitHub требует входа, поэтому локальный вывод не назван выгрузкой лога раннера.
+
+В этом же PR неверное ожидание возвращено на 201. Успешный запуск и merge будут
+подтверждены отдельно; ошибочный вариант не будет слит в main.
 
 ## 7. Реестры образов
 
