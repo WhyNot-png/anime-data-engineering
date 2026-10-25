@@ -1,5 +1,11 @@
 # Anime Data Engineering
 
+## Задание 7: тестирование, контейнеризация и CI/CD API
+
+[README-отчёт задания 7](labs/lab7-api-ci/README.md): 9 обязательных сценариев,
+PostgreSQL, многоэтапный non-root Docker, Compose tests и CI lint/test/build.
+Публикация Docker Hub требует настройки секретов владельцем; статус указан в отчёте.
+
 ## Задание 6: REST API «Менеджер задач»
 
 [Код и полный README-отчёт](labs/lab6-task-manager/README.md): FastAPI, PostgreSQL 16,

@@ -35,7 +35,7 @@ jobs:
       - name: Start real Docker Compose API and PostgreSQL
         run: |
           docker compose config --quiet
-          docker compose up -d --build api
+          docker compose up -d --build app
           for i in $(seq 1 60); do
             if curl -fsS http://127.0.0.1:8000/openapi.json -o /tmp/openapi.json; then break; fi
             sleep 2

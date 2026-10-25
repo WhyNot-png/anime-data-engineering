@@ -1,8 +1,11 @@
 .venv
 .env
 __pycache__
-tests
 .pytest_cache
 .git
 .coverage
 .ruff_cache
+screenshots
+evidence
+htmlcov
+dist

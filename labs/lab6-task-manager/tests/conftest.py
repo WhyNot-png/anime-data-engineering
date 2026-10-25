@@ -4,12 +4,14 @@ from collections.abc import AsyncIterator
 import pytest
 import pytest_asyncio
 from httpx import ASGITransport, AsyncClient
+from sqlalchemy import func, select
 from sqlalchemy.engine import make_url
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config import get_settings
 from app.db import get_engine, get_session, get_session_factory
 from app.main import app
+from app.models import Task, User
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -46,6 +48,12 @@ async def client() -> AsyncIterator[AsyncClient]:
         async with AsyncSession(
             bind=connection, expire_on_commit=False, join_transaction_mode="create_savepoint"
         ) as session:
+            assert await session.scalar(select(func.count()).select_from(User)) == 0, (
+                "Dirty tasks_test users"
+            )
+            assert await session.scalar(select(func.count()).select_from(Task)) == 0, (
+                "Dirty tasks_test tasks"
+            )
 
             async def override_session():
                 yield session

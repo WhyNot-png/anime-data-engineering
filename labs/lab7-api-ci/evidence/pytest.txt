@@ -1,0 +1,30 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.12, pytest-9.1.1, pluggy-1.7.0
+rootdir: /vercel/sandbox/data/lab7/repo/labs/lab6-task-manager
+configfile: pytest.ini
+testpaths: tests
+plugins: asyncio-1.4.1, cov-7.1.0, anyio-4.15.1
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=session, asyncio_default_test_loop_scope=session
+collected 41 items
+
+tests/test_api.py ................................                       [ 78%]
+tests/test_required_cases.py .........                                   [100%]
+
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.12.12-final-0 _______________
+
+Name                      Stmts   Miss Branch BrPart  Cover   Missing
+---------------------------------------------------------------------
+app/__init__.py               0      0      0      0   100%
+app/config.py                15      0      2      0   100%
+app/db.py                    17      0      0      0   100%
+app/main.py                  24      0      0      0   100%
+app/models.py                21      0      0      0   100%
+app/routers/__init__.py       0      0      0      0   100%
+app/routers/tasks.py         52     15     12      2    64%   13->exit, 14, 19-21, 32-33, 36, 53, 68-69, 71-72, 75, 88, 90
+app/routers/users.py         26      9      4      0    57%   23-27, 29, 35-37
+app/schemas.py               46      0      4      0   100%
+---------------------------------------------------------------------
+TOTAL                       201     24     22      2    84%
+Required test coverage of 80% reached. Total coverage: 83.86%
+============================== 41 passed in 1.10s ==============================

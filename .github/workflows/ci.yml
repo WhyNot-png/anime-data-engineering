@@ -2,8 +2,6 @@ name: CI
 
 on:
   push:
-    branches: [main, lab1-compliance]
-    tags: [lab1]
   pull_request:
   workflow_dispatch:
 
@@ -58,3 +56,93 @@ jobs:
         run: uv run --locked pre-commit run --all-files --show-diff-on-failure
       - name: Build distributable package
         run: uv build --no-sources
+
+  lint:
+    name: API lint
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: labs/lab6-task-manager
+    env:
+      UV_PYTHON: 3.12.12
+      UV_PYTHON_PREFERENCE: only-managed
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e # v6
+        with:
+          version: '0.13.5'
+      - run: uv sync --locked
+      - run: uv run ruff check .
+      - run: uv run ruff format --check .
+
+  test:
+    name: API PostgreSQL tests
+    needs: lint
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: labs/lab6-task-manager
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - name: Tests inside non-root multistage image with real PostgreSQL
+        run: |
+          docker compose --profile test config --quiet
+          docker compose --profile test run --build --rm tests
+      - name: Container logs and cleanup
+        if: always()
+        run: |
+          docker compose --profile test logs --no-color
+          docker compose --profile test down -v
+
+  build:
+    name: Build and publish images
+    needs: [lint, test, quality]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      packages: write
+    defaults:
+      run:
+        working-directory: labs/lab6-task-manager
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - name: Build runtime image and check non-root user
+        run: |
+          IMAGE="ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/anime-task-manager"
+          docker build --target runtime --tag "$IMAGE:$GITHUB_SHA" --tag "$IMAGE:latest" .
+          test "$(docker run --rm --entrypoint id "$IMAGE:$GITHUB_SHA" -u)" = "10001"
+      - name: Publish GHCR image
+        env:
+          REGISTRY_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          IMAGE="ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/anime-task-manager"
+          printf '%s' "$REGISTRY_TOKEN" | docker login ghcr.io --username "$GITHUB_ACTOR" --password-stdin
+          docker push "$IMAGE:$GITHUB_SHA"
+          docker push "$IMAGE:latest"
+          echo "GHCR image: $IMAGE:$GITHUB_SHA" >> "$GITHUB_STEP_SUMMARY"
+      - name: Publish Docker Hub image when credentials are configured
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+        run: |
+          if [ -z "$DOCKERHUB_USERNAME" ] || [ -z "$DOCKERHUB_TOKEN" ]; then
+            echo '::warning::Docker Hub image NOT published: add DOCKERHUB_USERNAME and DOCKERHUB_TOKEN repository secrets.'
+            echo 'Docker Hub: NOT published (missing repository secrets).' >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          SOURCE="ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/anime-task-manager"
+          TARGET="$DOCKERHUB_USERNAME/anime-task-manager"
+          printf '%s' "$DOCKERHUB_TOKEN" | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
+          docker tag "$SOURCE:$GITHUB_SHA" "$TARGET:$GITHUB_SHA"
+          docker tag "$SOURCE:$GITHUB_SHA" "$TARGET:latest"
+          docker push "$TARGET:$GITHUB_SHA"
+          docker push "$TARGET:latest"
+          echo "Docker Hub image: docker.io/$TARGET:$GITHUB_SHA" >> "$GITHUB_STEP_SUMMARY"
+      - name: Remove registry credentials
+        if: always()
+        run: |
+          docker logout ghcr.io || true
+          docker logout || true

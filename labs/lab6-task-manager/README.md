@@ -25,8 +25,8 @@ cd anime-data-engineering/labs/lab6-task-manager
 cp .env.example .env
 docker compose up -d db
 docker compose exec db psql -U app -d tasks -c "select 1"
-docker compose up -d --build api
-docker compose logs api
+docker compose up -d --build app
+docker compose logs app
 ```
 
 Контейнер API сам выполняет **`alembic upgrade head`**, затем запускает Uvicorn.
@@ -36,7 +36,7 @@ docker compose logs api
 ```bash
 # Таблицы и версия миграции
 docker compose exec db psql -U app -d tasks -c '\dt'
-docker compose exec api alembic current
+docker compose exec app alembic current
 
 # Остановить, сохранив данные
 docker compose down
@@ -251,3 +251,7 @@ pyproject.toml
 uv.lock
 README.md
 ```
+
+## Продолжение: задание 7
+
+[Тестирование, многоэтапный Docker и CI/CD с публикацией образов](../lab7-api-ci/README.md).
