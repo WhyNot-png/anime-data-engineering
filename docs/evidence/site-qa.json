@@ -1,0 +1,24 @@
+{
+  "scope": "Homepage/search and T1 layout only. Chart browser verification was not retried; no visual claim for results chart.",
+  "http_status": 200,
+  "external_network_attempts": [],
+  "js_errors": [],
+  "search": [
+    {
+      "query": "кэширование",
+      "result_items": 0,
+      "value": "кэширование",
+      "message": "Начните печатать для поиска"
+    },
+    {
+      "query": "воспроизводимость",
+      "result_items": 0,
+      "value": "воспроизводимость",
+      "message": "Начните печатать для поиска"
+    }
+  ],
+  "mobile": {
+    "viewport": 390,
+    "document_width": 390
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "runs": [
+    {
+      "id": 40239002945,
+      "status": "success",
+      "branch": "lab3-ssg",
+      "scope": "Build only; deploy skipped on non-main branch",
+      "displayed_total_seconds": 17,
+      "screenshot": "screenshots/actions-success.svg",
+      "url": "https://github.com/WhyNot-png/anime-data-engineering/actions/runs/40239002945"
+    },
+    {
+      "id": 40239057188,
+      "status": "failure (intentional missing internal link)",
+      "branch": "lab3-strict-failure-demo",
+      "scope": "Strict build failed; deploy skipped",
+      "displayed_total_seconds": 19,
+      "screenshot": "screenshots/actions-failure.svg",
+      "url": "https://github.com/WhyNot-png/anime-data-engineering/actions/runs/40239057188"
+    }
+  ],
+  "verified_matrix_after_utf8_fix": {
+    "run_id": 40239260121,
+    "conclusion": "success",
+    "url": "https://github.com/WhyNot-png/anime-data-engineering/actions/runs/40239260121"
+  },
+  "method": "Displayed total duration from the actual public GitHub run summaries; not time to deploy; logs require sign-in and were not fabricated."
+}

@@ -1,0 +1,89 @@
+{
+  "environment": {
+    "python": "3.12.12",
+    "platform": "Linux-6.18.49-x86_64-with-glibc2.34"
+  },
+  "method": "12 equivalent text pages; 3 clean-output builds and 3 single-page edits; median; no dependency installation/network in timed interval; OS caches not flushed; default themes differ; Sphinx doctrees excluded from deployment size",
+  "versions": {
+    "mkdocs": "1.6.1",
+    "mkdocs-material": "9.7.7",
+    "Sphinx": "8.2.3",
+    "myst-parser": "4.0.1",
+    "pelican": "4.11.0.post0",
+    "Nikola": "8.3.3"
+  },
+  "results": [
+    {
+      "generator": "mkdocs",
+      "cold_seconds": [
+        0.4122521500003131,
+        0.39783059499995943,
+        0.3944485799997892
+      ],
+      "cold_median_seconds": 0.39783059499995943,
+      "incremental_seconds": [
+        0.3920503539998208,
+        0.3912993379999534,
+        0.39197917000001326
+      ],
+      "incremental_median_seconds": 0.39197917000001326,
+      "page_bytes": 17798,
+      "site_bytes": 2917501,
+      "file_count": 59
+    },
+    {
+      "generator": "sphinx",
+      "cold_seconds": [
+        0.6728317289998813,
+        0.657175494999592,
+        0.6561077430001205
+      ],
+      "cold_median_seconds": 0.657175494999592,
+      "incremental_seconds": [
+        0.5410863209999661,
+        0.5448880940002709,
+        0.5362479729997176
+      ],
+      "incremental_median_seconds": 0.5410863209999661,
+      "page_bytes": 10219,
+      "site_bytes": 332527,
+      "file_count": 47
+    },
+    {
+      "generator": "pelican",
+      "cold_seconds": [
+        0.3005527830000574,
+        0.3018789160000779,
+        0.3098379230000319
+      ],
+      "cold_median_seconds": 0.3018789160000779,
+      "incremental_seconds": [
+        0.28886422100003983,
+        0.29489841499980685,
+        0.2966220909997901
+      ],
+      "incremental_median_seconds": 0.29489841499980685,
+      "page_bytes": 8885,
+      "site_bytes": 314719,
+      "file_count": 30
+    },
+    {
+      "generator": "nikola",
+      "cold_seconds": [
+        0.6066221179999047,
+        0.587928319999719,
+        0.6017383650000738
+      ],
+      "cold_median_seconds": 0.6017383650000738,
+      "incremental_seconds": [
+        0.5252157240001907,
+        0.5088406129998475,
+        0.5088478600000599
+      ],
+      "incremental_median_seconds": 0.5088478600000599,
+      "page_bytes": 10349,
+      "site_bytes": 1127387,
+      "file_count": 63
+    }
+  ]
+}

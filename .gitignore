@@ -28,3 +28,11 @@ site/
 _build/
 .env.*
 !.env.example
+
+# Lab 3 derived results and content-addressed calculation cache
+.cache/
+.nox/
+docs/generated/
+
+# Generated results page; rebuilt with fresh version metadata
+docs/results.md

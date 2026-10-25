@@ -1,0 +1,207 @@
+{
+  "rubric": "0 not practical; 1 substantial manual work; 2 extension/configuration needed; 3 low-friction fit for this project. Not a claim all score-3 features are built in.",
+  "criteria": [
+    {
+      "criterion": "Исходные форматы",
+      "weight": 5,
+      "scores": [
+        3,
+        3,
+        2,
+        3
+      ]
+    },
+    {
+      "criterion": "Формулы и ссылки",
+      "weight": 2,
+      "scores": [
+        2,
+        3,
+        1,
+        2
+      ]
+    },
+    {
+      "criterion": "Рисунки и подрисунки",
+      "weight": 2,
+      "scores": [
+        1,
+        3,
+        1,
+        2
+      ]
+    },
+    {
+      "criterion": "Таблицы и CSV",
+      "weight": 5,
+      "scores": [
+        2,
+        3,
+        2,
+        2
+      ]
+    },
+    {
+      "criterion": "Интерактивный HTML",
+      "weight": 5,
+      "scores": [
+        3,
+        3,
+        3,
+        3
+      ]
+    },
+    {
+      "criterion": "Вычисления и кэш",
+      "weight": 13,
+      "scores": [
+        2,
+        2,
+        1,
+        2
+      ]
+    },
+    {
+      "criterion": "BibTeX",
+      "weight": 2,
+      "scores": [
+        2,
+        3,
+        1,
+        1
+      ]
+    },
+    {
+      "criterion": "Сноски и терминология",
+      "weight": 3,
+      "scores": [
+        2,
+        3,
+        1,
+        2
+      ]
+    },
+    {
+      "criterion": "Адаптивная вёрстка",
+      "weight": 5,
+      "scores": [
+        3,
+        2,
+        1,
+        2
+      ]
+    },
+    {
+      "criterion": "Шаблоны и overrides",
+      "weight": 5,
+      "scores": [
+        3,
+        3,
+        3,
+        3
+      ]
+    },
+    {
+      "criterion": "PDF / LaTeX",
+      "weight": 1,
+      "scores": [
+        1,
+        3,
+        1,
+        1
+      ]
+    },
+    {
+      "criterion": "Версии документации",
+      "weight": 4,
+      "scores": [
+        3,
+        2,
+        1,
+        1
+      ]
+    },
+    {
+      "criterion": "Локальный русский поиск",
+      "weight": 9,
+      "scores": [
+        3,
+        3,
+        1,
+        2
+      ]
+    },
+    {
+      "criterion": "Локализация",
+      "weight": 3,
+      "scores": [
+        2,
+        3,
+        3,
+        3
+      ]
+    },
+    {
+      "criterion": "Docstrings",
+      "weight": 2,
+      "scores": [
+        3,
+        3,
+        1,
+        1
+      ]
+    },
+    {
+      "criterion": "Расширяемость",
+      "weight": 4,
+      "scores": [
+        3,
+        3,
+        3,
+        3
+      ]
+    },
+    {
+      "criterion": "Сборка и объём",
+      "weight": 6,
+      "scores": [
+        2,
+        2,
+        3,
+        2
+      ]
+    },
+    {
+      "criterion": "Простота CI для Markdown-отчёта",
+      "weight": 20,
+      "scores": [
+        3,
+        2,
+        2,
+        2
+      ]
+    },
+    {
+      "criterion": "Зрелость / лицензия / зеркала",
+      "weight": 4,
+      "scores": [
+        3,
+        3,
+        3,
+        3
+      ]
+    }
+  ],
+  "generators": [
+    "MkDocs Material",
+    "Sphinx + MyST",
+    "Pelican",
+    "Nikola"
+  ],
+  "totals_out_of_100": [
+    86.66666666666667,
+    84.0,
+    61.333333333333336,
+    72.33333333333333
+  ]
+}
