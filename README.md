@@ -1,5 +1,33 @@
 # Anime Data Engineering
 
+## Задание 3: T1 + P3
+
+Сайт на MkDocs Material: сравнительный анализ четырёх Python SSG и воспроизводимый
+конвейер числовых данных MyAnimeList → агрегаты/график → статические страницы.
+Планируемый адрес после первого deploy: https://whynot-png.github.io/anime-data-engineering/
+
+```bash
+uv sync --locked --group docs
+uv run --group docs nox -s site
+uv run --group docs mkdocs serve
+```
+
+Отчёты: `docs/t1.md`, `docs/p3.md`, `docs/report.md`. Числовые входы и источник —
+`research/`; результаты генерируются в `docs/generated/` и не коммитятся.
+Перезапуск замеров: `uv run --group docs python scripts/benchmark_experiment.py` и
+`uv run --group docs --group benchmark python scripts/benchmark_ssg.py`.
+Для воспроизводимости небольшого ETL-эксперимента в Git хранится атрибутированный
+числовой CSV около 550 КиБ; для этого файла явно разрешён размер в pre-commit.
+
+Публикация: Settings → Pages → Source = GitHub Actions, затем merge PR в main.
+Workflow `.github/workflows/pages.yml` собирает каждую ветку, публикует только main
+и проверяет HTTP/контрольную строку. Отечественный хостинг **исключён по просьбе
+автора** и не заявляется выполненным. В отчёте явно отмечены непроверенные части
+развёртывания и браузерной проверки графика. Тег lab1 не изменяется.
+
+---
+
+
 ![CI](https://github.com/WhyNot-png/anime-data-engineering/actions/workflows/ci.yml/badge.svg?branch=main)
 
 Учебный проект по инженерии данных об аниме: воспроизводимая обработка выбранного
