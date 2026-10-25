@@ -50,7 +50,9 @@ packages = ["src/research_graph"]
 [tool.ruff]
 target-version = "py312"
 line-length = 100
-extend-exclude = [".cache", "site"]
+# This teaching notebook preserves intentional Python anti-patterns and the
+# instructor's immutable check cells. Production src/tests remain fully linted.
+extend-exclude = [".cache", "site", "notebooks/Lab_04_Decorators_completed.ipynb"]
 
 [tool.ruff.lint]
 select = ["E4", "E7", "E9", "F", "I", "UP", "B", "SIM", "PTH"]

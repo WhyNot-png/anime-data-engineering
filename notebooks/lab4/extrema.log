@@ -1,0 +1,26 @@
+22:37:33 | DEBUG    | extrema | Вызов find_extrema_logged(sin, 0, 12.566)
+22:37:33 | DEBUG    | extrema | find_extrema_logged выполнена за 0.000261 с
+22:37:33 | INFO     | extrema | find_extrema_logged вернула {'global_max': (1.5707963267948966, 1.0), 'global_min': (4.71238898038469, -1.0), 'interval': (0, 12.566370614359172), 'local_max': [(1.5707963267948966, 1.0), (7.853981633974484, 1.0)], ...}
+22:37:33 | DEBUG    | extrema | Вызов find_extrema_logged(cubic, -2, 3)
+22:37:33 | WARNING  | extrema | find_extrema_logged: global_min на границе отрезка: x=-2.0, f(x)=-2.0 — это может быть не экстремум функции, а край отрезка
+22:37:33 | WARNING  | extrema | find_extrema_logged: global_max на границе отрезка: x=3.0, f(x)=18.0 — это может быть не экстремум функции, а край отрезка
+22:37:33 | DEBUG    | extrema | find_extrema_logged выполнена за 0.001584 с
+22:37:33 | INFO     | extrema | find_extrema_logged вернула {'global_max': (3.0, 18.0), 'global_min': (-2.0, -2.0), 'interval': (-2, 3), 'local_max': [(-1.0, 2.0)], ...}
+22:37:33 | DEBUG    | extrema | Вызов find_extrema_logged(rastrigin, -5.12, 5.12, n=5000)
+22:37:33 | DEBUG    | extrema | find_extrema_logged выполнена за 0.002040 с
+22:37:33 | INFO     | extrema | find_extrema_logged вернула {'global_max': (-4.521984, 40.3530920250807), 'global_min': (0.0, 0.0), 'interval': (-5.12, 5.12), 'local_max': [(-4.521984, 40.3530920250807), (-3.5184640000000003, 32.312369590196916), (-2.512896, 26.281836614132914), (-1.5073280000000002, 22.26143969906181), (-0.50176, 20.251151662099133), (0.50176, 20.251151662099133), ...], ...}
+22:37:33 | DEBUG    | extrema | Вызов find_extrema_logged(sin, 5, 1)
+22:37:33 | ERROR    | extrema | Ошибка в find_extrema_logged(sin, 5, 1)
+Traceback (most recent call last):
+  File "/tmp/ipykernel_6579/1407611770.py", line 14, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/ipykernel_6579/1407611770.py", line 29, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/ipykernel_6579/1407611770.py", line 49, in find_extrema_logged
+    return find_extrema(f, a, b, n=n)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/ipykernel_6579/3284135185.py", line 4, in find_extrema
+    raise ValueError(f"левая граница должна быть меньше правой: a={a}, b={b}")
+ValueError: левая граница должна быть меньше правой: a=5, b=1
