@@ -1,0 +1,5 @@
+Scanning posts.[2026-10-25 21:51:58] ERROR: scan_posts: Error reading post pages/page00.md
+[2026-10-25 21:51:58] ERROR: Nikola: Error reading timeline
+[2026-10-25 21:51:58] ERROR: Nikola: Error loading tasks. An unhandled exception occurred.
+[2026-10-25 21:51:58] ERROR: Nikola: Exception: Could not find translations for pages/page00.md, check your TRANSLATIONS_PATTERN
+[2026-10-25 21:51:58] WARNING: Nikola: To see more details, run Nikola in debug mode (set environment variable NIKOLA_DEBUG=1) or use NIKOLA_SHOW_TRACEBACKS=1

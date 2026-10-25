@@ -1,0 +1,9 @@
+scripts/experiment.py:44: error: No overload variant of "int" matches argument type "object"  [call-overload]
+scripts/experiment.py:44: note: Possible overload variants:
+scripts/experiment.py:44: note:     def int(str | Buffer | SupportsInt | SupportsIndex | SupportsTrunc = ..., /) -> int
+scripts/experiment.py:44: note:     def int(str | bytes | bytearray, /, base: SupportsIndex) -> int
+scripts/experiment.py:49: error: No overload variant of "int" matches argument type "object"  [call-overload]
+scripts/experiment.py:49: note: Possible overload variants:
+scripts/experiment.py:49: note:     def int(str | Buffer | SupportsInt | SupportsIndex | SupportsTrunc = ..., /) -> int
+scripts/experiment.py:49: note:     def int(str | bytes | bytearray, /, base: SupportsIndex) -> int
+Found 2 errors in 1 file (checked 24 source files)

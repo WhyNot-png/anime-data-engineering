@@ -1,0 +1,33 @@
+nox > Running session site
+nox > uv run --locked --group docs python scripts/experiment.py
+{"cache_hit": true, "eligible": 10627, "ms": 2.0054520000485354}
+nox > uv run --locked --group docs mkdocs build --strict
+
+ │  ⚠  Warning from the Material for MkDocs team
+ │
+ │  MkDocs 2.0, the underlying framework of Material for MkDocs,
+ │  will introduce backward-incompatible changes, including:
+ │
+ │  × All plugins will stop working – the plugin system has been removed
+ │  × All theme overrides will break – the theming system has been rewritten
+ │  × No migration path exists – existing projects cannot be upgraded
+ │  × Closed contribution model – community members can't report bugs
+ │  × Currently unlicensed – unsuitable for production use
+ │
+ │  Our full analysis:
+ │
+ │  https://squidfunk.github.io/mkdocs-material/blog/2026/02/18/mkdocs-2.0/
+
+INFO    -  Cleaning site directory
+INFO    -  Building documentation to directory: /vercel/sandbox/data/lab3/site
+INFO    -  The following pages exist in the docs directory, but are not included in the "nav" configuration:
+  - lab1_report.md
+  - assets/vendor/README.md
+WARNING -  Doc file 'report.md' contains a link 't1.md#4-реальные-замеры-сборки', but the doc 't1.md' does not contain an anchor '#4-реальные-замеры-сборки'.
+WARNING -  Doc file 'report.md' contains a link 't1.md#цена-интерактивности', but the doc 't1.md' does not contain an anchor '#цена-интерактивности'.
+WARNING -  Doc file 'report.md' contains a link 'p3.md#кэширование-и-корректная-инвалидация', but the doc 'p3.md' does not contain an anchor '#кэширование-и-корректная-инвалидация'.
+WARNING -  Doc file 'report.md' contains a link 'p3.md#контролируемое-изменение-исходных-данных', but the doc 'p3.md' does not contain an anchor '#контролируемое-изменение-исходных-данных'.
+
+Aborted with 4 warnings in strict mode!
+nox > Command uv run --locked --group docs mkdocs build --strict failed with exit code 1
+nox > Session site failed.

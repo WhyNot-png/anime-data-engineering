@@ -1,0 +1,69 @@
+{
+  "Material": {
+    "templates": [
+      "404.html",
+      "base.html",
+      "blog-post.html",
+      "blog.html",
+      "main.html",
+      "redirect.html"
+    ],
+    "path_suffix": "material/templates",
+    "count": 6
+  },
+  "Sphinx basic": {
+    "templates": [
+      "defindex.html",
+      "domainindex.html",
+      "genindex-single.html",
+      "genindex-split.html",
+      "genindex.html",
+      "globaltoc.html",
+      "layout.html",
+      "localtoc.html",
+      "page.html",
+      "relations.html",
+      "search.html",
+      "searchbox.html",
+      "searchfield.html",
+      "sourcelink.html"
+    ],
+    "path_suffix": "sphinx/themes/basic",
+    "count": 14
+  },
+  "Pelican simple": {
+    "templates": [
+      "archives.html",
+      "article.html",
+      "author.html",
+      "authors.html",
+      "base.html",
+      "categories.html",
+      "category.html",
+      "index.html",
+      "page.html",
+      "pagination.html",
+      "period_archives.html",
+      "tag.html",
+      "tags.html",
+      "translations.html"
+    ],
+    "path_suffix": "pelican/themes/simple/templates",
+    "count": 14
+  },
+  "Nikola bootstrap4": {
+    "templates": [
+      "authors.tmpl",
+      "base.tmpl",
+      "base_helper.tmpl",
+      "index_helper.tmpl",
+      "listing.tmpl",
+      "pagination_helper.tmpl",
+      "post.tmpl",
+      "tags.tmpl",
+      "ui_helper.tmpl"
+    ],
+    "path_suffix": "nikola/data/themes/bootstrap4/templates",
+    "count": 9
+  }
+}

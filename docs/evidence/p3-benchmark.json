@@ -1,0 +1,81 @@
+{
+  "method": "5 pairs; fresh process per run; cold removes calculation cache; warm reuses exact content key; times measured locally, not claimed as CI or deployment duration",
+  "cold_samples": [
+    {
+      "cache_hit": false,
+      "eligible": 10627,
+      "ms": 48.83035900002142,
+      "wall_ms": 90.94349299994064
+    },
+    {
+      "cache_hit": false,
+      "eligible": 10627,
+      "ms": 48.99400499971307,
+      "wall_ms": 88.97819300000265
+    },
+    {
+      "cache_hit": false,
+      "eligible": 10627,
+      "ms": 45.811959999809915,
+      "wall_ms": 85.31940200009558
+    },
+    {
+      "cache_hit": false,
+      "eligible": 10627,
+      "ms": 46.12370099994223,
+      "wall_ms": 85.2999860003365
+    },
+    {
+      "cache_hit": false,
+      "eligible": 10627,
+      "ms": 46.24889600017923,
+      "wall_ms": 85.71959599976253
+    }
+  ],
+  "warm_samples": [
+    {
+      "cache_hit": true,
+      "eligible": 10627,
+      "ms": 1.9556560000637546,
+      "wall_ms": 42.67517300013424
+    },
+    {
+      "cache_hit": true,
+      "eligible": 10627,
+      "ms": 1.9288459998278995,
+      "wall_ms": 41.51230400020722
+    },
+    {
+      "cache_hit": true,
+      "eligible": 10627,
+      "ms": 1.910658999804582,
+      "wall_ms": 40.77661899964369
+    },
+    {
+      "cache_hit": true,
+      "eligible": 10627,
+      "ms": 1.9290119998913724,
+      "wall_ms": 39.7890749995895
+    },
+    {
+      "cache_hit": true,
+      "eligible": 10627,
+      "ms": 1.9499840000207769,
+      "wall_ms": 41.747347000182344
+    }
+  ],
+  "cold_compute_median_ms": 46.24889600017923,
+  "warm_compute_median_ms": 1.9290119998913724,
+  "cold_wall_median_ms": 85.71959599976253,
+  "warm_wall_median_ms": 41.51230400020722,
+  "controlled_edit": {
+    "description": "Remove the real record mal_id=1 from a temporary snapshot; restore original after test; no new fabricated observations",
+    "before_input_sha256": "0560a2ec0f189f72bb3d9d1a10b507990d8b19d3bfc0b32dcab6c6a8bdc7ece5",
+    "after_input_sha256": "9252185e88a862460243a4658254e79e313944a50f2212d236294710eaefcec1",
+    "eligible_before": 10627,
+    "eligible_after": 10626,
+    "tv_before": 4172,
+    "tv_after": 4171,
+    "cache_hit_after_edit": false
+  }
+}

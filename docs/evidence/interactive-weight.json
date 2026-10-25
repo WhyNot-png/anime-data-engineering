@@ -1,0 +1,37 @@
+[
+  {
+    "library": "Chart.js 4.4.1",
+    "bytes": 205125,
+    "gzip_bytes": 69371
+  },
+  {
+    "library": "Plotly (installed)",
+    "bytes": 4815814,
+    "gzip_bytes": 1468879,
+    "package_version": "7.1.0"
+  },
+  {
+    "library": "Bokeh (installed)",
+    "bytes": 4343941,
+    "gzip_bytes": 1299918,
+    "package_version": "3.10.1"
+  },
+  {
+    "library": "Vega 5",
+    "source": "https://cdn.jsdelivr.net/npm/vega@5/build/vega.min.js",
+    "bytes": 515242,
+    "gzip_bytes": 177786
+  },
+  {
+    "library": "Vega-Lite 5",
+    "source": "https://cdn.jsdelivr.net/npm/vega-lite@5/build/vega-lite.min.js",
+    "bytes": 252198,
+    "gzip_bytes": 79242
+  },
+  {
+    "library": "Vega-Embed 6",
+    "source": "https://cdn.jsdelivr.net/npm/vega-embed@6/build/vega-embed.min.js",
+    "bytes": 60630,
+    "gzip_bytes": 20910
+  }
+]
