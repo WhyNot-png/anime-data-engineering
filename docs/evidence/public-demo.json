@@ -1,0 +1,77 @@
+{
+  "http_status": 200,
+  "observed_evidence": {
+    "metadata": {
+      "git_commit": "a6d120c7bd846c5eca600a2c9f2f1f6fb8804466",
+      "built_at_utc": "2026-10-25T22:27:16.569964+00:00",
+      "dataset_version": "controlled-demo-without-mal-id-1",
+      "min_votes": 1000,
+      "input_sha256": "cd6d417b56b734d6ba577cbf20b307bdfc2352c6d130e3cd0f103168c0263470",
+      "cache_key": "4c216861ba216b9aa243eeb1a3c9853c0a3088e54b8a38b31c109219d8c90805",
+      "cache_hit": false,
+      "calculation_ms": 45.9904650000027
+    },
+    "facts": {
+      "min_votes": 1000,
+      "source_rows": 28626,
+      "missing_scores": 9965,
+      "eligible": 10626,
+      "groups": [
+        {
+          "format": "TV",
+          "count": 4171,
+          "mean_score": 7.00411891632702
+        },
+        {
+          "format": "OVA",
+          "count": 2458,
+          "mean_score": 6.494361269324654
+        },
+        {
+          "format": "Movie",
+          "count": 1403,
+          "mean_score": 7.0768282252316475
+        },
+        {
+          "format": "Special",
+          "count": 955,
+          "mean_score": 6.720753926701571
+        },
+        {
+          "format": "ONA",
+          "count": 869,
+          "mean_score": 6.693417721518987
+        },
+        {
+          "format": "TV Special",
+          "count": 355,
+          "mean_score": 6.7962535211267605
+        },
+        {
+          "format": "Music",
+          "count": 267,
+          "mean_score": 6.734531835205993
+        },
+        {
+          "format": "CM",
+          "count": 99,
+          "mean_score": 6.145858585858586
+        },
+        {
+          "format": "PV",
+          "count": 49,
+          "mean_score": 6.6138775510204075
+        }
+      ],
+      "comparison_plan": {
+        "question": "How are titles with at least the minimum vote count distributed by format?",
+        "grain": "one unique MyAnimeList mal_id",
+        "population": "July 2025 snapshot, score available, votes >= min_votes",
+        "unit": "titles; mean score is a secondary non-additive statistic",
+        "chart": "categorical-bars: all formats if <=7, otherwise six + additive remainder",
+        "table": "all formats, count and unweighted mean of title-level scores",
+        "limitations": "Selection by vote count; not a causal comparison or pooled user rating"
+      }
+    }
+  }
+}
