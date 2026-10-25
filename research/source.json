@@ -1,0 +1,20 @@
+{
+  "url": "https://www.kaggle.com/api/v1/datasets/download/sazzadsiddiquelikhon/myanimelist-anime-database-july-2025",
+  "archive_sha256": "345c52be312e8ba94adfcffb1c4c3f6b1e3afe89f890a1f4f87dfa1e23f31491",
+  "member": "anime.csv",
+  "dataset_version": "myanimelist-july-2025-v1",
+  "source_page": "https://www.kaggle.com/datasets/sazzadsiddiquelikhon/myanimelist-anime-database-july-2025",
+  "original_rows": 28858,
+  "unique_ids": 28627,
+  "exact_duplicate_rows_removed": 231,
+  "raw_csv_sha256": "acb302f9e3328477a0ce438b986dd910629971433271ad37593ae9672a99601e",
+  "metrics_sha256": "0560a2ec0f189f72bb3d9d1a10b507990d8b19d3bfc0b32dcab6c6a8bdc7ece5",
+  "fields": [
+    "mal_id",
+    "type",
+    "score",
+    "scored_by"
+  ],
+  "license": "Database: Open Database; original textual/media content not redistributed",
+  "provenance": "Metrics-only projection, exact duplicates removed; no titles, synopses or media copied."
+}
