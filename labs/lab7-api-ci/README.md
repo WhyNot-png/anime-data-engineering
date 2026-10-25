@@ -204,10 +204,13 @@ docker pull ghcr.io/whynot-png/anime-task-manager@sha256:7f308e677c438447143b1fb
 автоматический `GITHUB_TOKEN`; личный PAT не передавался и не сохранялся.
 `latest` будет обновляться последующими push main; SHA и digest фиксируют конкретный образ.
 
-### Docker Hub — требуется настройка владельцем
+### Docker Hub — проверка после настройки secrets
 
-До получения логина и registry credentials ссылка на опубликованный Docker Hub
-образ отсутствует и не выдумывается. Добавьте в [Repository Actions secrets](https://github.com/WhyNot-png/anime-data-engineering/settings/secrets/actions):
+Владелец сообщил о добавлении обоих secrets. Следующий push main запускает
+реальную проверку публикации; до её успеха образ не объявляется опубликованным.
+Для настройки использованы [Repository Actions secrets](https://github.com/WhyNot-png/anime-data-engineering/settings/secrets/actions).
+
+Необходимые ключи в [Repository Actions secrets](https://github.com/WhyNot-png/anime-data-engineering/settings/secrets/actions):
 
 - `DOCKERHUB_USERNAME` — логин Docker Hub;
 - `DOCKERHUB_TOKEN` — отдельный Docker Hub access token с правами чтения/записи,
@@ -248,3 +251,5 @@ docker pull ghcr.io/whynot-png/anime-task-manager@sha256:7f308e677c438447143b1fb
    миграцию одновременно. Отдельный шаг CD даёт контролируемый однократный запуск
    и отдельные права/логи, но требует оркестрации и совместимости старого/нового кода
    со схемой; резервные копии и ручная проверка миграций нужны в обоих вариантах.
+
+Настройка secrets подтверждена владельцем; результат нового запуска проверяется отдельно.
