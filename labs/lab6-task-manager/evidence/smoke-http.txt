@@ -1,0 +1,11 @@
+POST /users 201
+POST /users 409
+GET /users/3 200
+POST /tasks 201
+GET /tasks/3 200
+GET /tasks?owner_id=3&done=false&limit=1&offset=0 200
+PATCH /tasks/3 200
+GET /tasks?limit=101 422
+DELETE /tasks/3 204
+GET /tasks/3 404
+All HTTP smoke checks passed

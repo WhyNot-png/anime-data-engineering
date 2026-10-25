@@ -1,5 +1,12 @@
 # Anime Data Engineering
 
+## Задание 6: REST API «Менеджер задач»
+
+[Код и полный README-отчёт](labs/lab6-task-manager/README.md): FastAPI, PostgreSQL 16,
+асинхронная SQLAlchemy 2.0, Pydantic v2 и Alembic. В отчёте — команды запуска,
+подлинные скриншоты Swagger 201/200/404, `\dt` в psql и ответы на все шесть вопросов.
+Сервис изолирован в `labs/lab6-task-manager`, прошлые задания не заменяет.
+
 ## Задание 3: T1 + P3
 
 Сайт на MkDocs Material: сравнительный анализ четырёх Python SSG и воспроизводимый

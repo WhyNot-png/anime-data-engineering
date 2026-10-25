@@ -1,0 +1,104 @@
+{
+  "checked_at": "2026-10-25T22:58:22.222Z",
+  "origin": "Local FastAPI + native PostgreSQL 16; actual Swagger UI requests",
+  "requests": [
+    {
+      "method": "POST",
+      "path": "/users",
+      "status": 201,
+      "response": {
+        "id": 2,
+        "email": "swagger-1792969097586@example.com",
+        "name": "Swagger Student",
+        "created_at": "2026-10-25T22:58:17.993846Z"
+      },
+      "process_time": "0.005575"
+    },
+    {
+      "method": "GET",
+      "path": "/users/2",
+      "status": 200,
+      "response": {
+        "id": 2,
+        "email": "swagger-1792969097586@example.com",
+        "name": "Swagger Student",
+        "created_at": "2026-10-25T22:58:17.993846Z"
+      },
+      "process_time": "0.009064"
+    },
+    {
+      "method": "POST",
+      "path": "/tasks",
+      "status": 201,
+      "response": {
+        "id": 2,
+        "title": "Prepare lab 6 report",
+        "description": "Created through Swagger UI",
+        "done": false,
+        "created_at": "2026-10-25T22:58:19.320332Z",
+        "owner_id": 2
+      },
+      "process_time": "0.010746"
+    },
+    {
+      "method": "GET",
+      "path": "/tasks",
+      "status": 200,
+      "response": [
+        {
+          "id": 2,
+          "title": "Prepare lab 6 report",
+          "description": "Created through Swagger UI",
+          "done": false,
+          "created_at": "2026-10-25T22:58:19.320332Z",
+          "owner_id": 2
+        }
+      ],
+      "process_time": "0.002965"
+    },
+    {
+      "method": "GET",
+      "path": "/tasks/2",
+      "status": 200,
+      "response": {
+        "id": 2,
+        "title": "Prepare lab 6 report",
+        "description": "Created through Swagger UI",
+        "done": false,
+        "created_at": "2026-10-25T22:58:19.320332Z",
+        "owner_id": 2
+      },
+      "process_time": "0.003931"
+    },
+    {
+      "method": "PATCH",
+      "path": "/tasks/2",
+      "status": 200,
+      "response": {
+        "id": 2,
+        "title": "Prepare lab 6 report",
+        "description": "Created through Swagger UI",
+        "done": true,
+        "created_at": "2026-10-25T22:58:19.320332Z",
+        "owner_id": 2
+      },
+      "process_time": "0.006513"
+    },
+    {
+      "method": "DELETE",
+      "path": "/tasks/2",
+      "status": 204,
+      "response": null,
+      "process_time": "0.003937"
+    },
+    {
+      "method": "GET",
+      "path": "/tasks/2",
+      "status": 404,
+      "response": {
+        "detail": "Task not found"
+      },
+      "process_time": "0.005080"
+    }
+  ]
+}
