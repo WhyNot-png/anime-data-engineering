@@ -2,9 +2,10 @@ services:
   jupyter:
     build: .
     ports:
-      - "8888:8888"
+      - "127.0.0.1:8888:8888"
     volumes:
       - .:/app
+      - /app/.venv
       - ${HOME}/.kaggle:/root/.kaggle:ro
     environment:
       KAGGLE_DATASET: ${KAGGLE_DATASET:-sazzadsiddiquelikhon/myanimelist-anime-database-july-2025}

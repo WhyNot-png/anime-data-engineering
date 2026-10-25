@@ -1,0 +1,66 @@
+[build-system]
+requires = ["hatchling==1.27.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "anime-data-engineering"
+version = "0.1.0"
+description = "Typed research project scaffold for the MyAnimeList dataset"
+readme = "README.md"
+requires-python = ">=3.12,<3.14"
+dependencies = [
+  "pydantic>=2.12,<3",
+  "pydantic-settings>=2.11,<3",
+  "typer>=0.20,<1",
+]
+
+[project.optional-dependencies]
+etl = [
+  "pandas>=2.2,<3", "pyarrow>=17,<22", "kaggle>=1.6,<2",
+  "SQLAlchemy>=2,<3", "python-dotenv>=1,<2",
+]
+notebooks = ["jupyterlab>=4.2,<5"]
+
+[project.scripts]
+rg = "research_graph.cli:app"
+
+[dependency-groups]
+dev = [
+  "pytest>=8,<10", "pytest-cov>=6,<8", "mypy>=1.18,<2",
+  "ruff>=0.14,<1", "pre-commit>=4,<5", "pandas-stubs>=2.2,<3",
+  # Preserve and test the pre-existing CSV/Parquet/SQLite pipeline.
+  "pandas>=2.2,<3", "pyarrow>=17,<22", "SQLAlchemy>=2,<3",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/research_graph"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I", "UP", "B", "SIM", "PTH"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+explicit_package_bases = true
+mypy_path = "src"
+files = ["src", "tests"]
+
+[[tool.mypy.overrides]]
+module = ["kaggle.*", "sqlalchemy", "sqlalchemy.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-ra --strict-markers --cov=research_graph --cov-report=term-missing --cov-fail-under=70"
+
+[tool.coverage.run]
+branch = true
+source = ["src/research_graph"]
+
+[tool.coverage.report]
+exclude_lines = ["pragma: no cover", "if TYPE_CHECKING:", "raise NotImplementedError"]

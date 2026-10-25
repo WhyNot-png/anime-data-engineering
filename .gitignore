@@ -13,3 +13,18 @@ data/processed/*
 .DS_Store
 .idea/
 .vscode/
+
+# Build, static analysis and coverage artifacts
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+*.egg-info/
+build/
+dist/
+site/
+_build/
+.env.*
+!.env.example

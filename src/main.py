@@ -1,16 +1,6 @@
-from pathlib import Path
+"""Compatibility wrapper; prefer research_graph.pipelines.main."""
 
-from src.extract import extract
-from src.load import load
-from src.transform import transform
-
-
-def main() -> None:
-    raw_dir = extract()
-    parquet_path = transform(raw_dir, Path("data/processed"))
-    row_count = load(parquet_path)
-    print(f"ETL completed: {row_count} rows loaded")
-
+from research_graph.pipelines.main import main as main
 
 if __name__ == "__main__":
     main()
