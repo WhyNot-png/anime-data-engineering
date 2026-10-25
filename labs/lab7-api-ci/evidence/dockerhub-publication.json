@@ -1,0 +1,12 @@
+{
+  "url": "https://hub.docker.com/v2/repositories/churovaa/anime-task-manager/tags/b6782fb6147121ca92127b68d91035caaf1e210b",
+  "status": 200,
+  "name": "b6782fb6147121ca92127b68d91035caaf1e210b",
+  "digest": "sha256:213ee95b73838f4e7fc1387a204baf4fff78963653dffed11038d12912288ea0",
+  "last_updated": "2026-10-25T23:47:28.234394Z",
+  "pipeline_url": "https://github.com/WhyNot-png/anime-data-engineering/actions/runs/40246205211",
+  "pipeline_status": "Success",
+  "repository_url": "https://hub.docker.com/r/churovaa/anime-task-manager",
+  "authentication": "anonymous public API request",
+  "note": "Earlier missing-credential runs in the report are historical."
+}

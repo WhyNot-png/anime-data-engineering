@@ -14,13 +14,13 @@
 - Многоэтапный Dockerfile: runtime-deps, test-deps, runtime, test; UID/GID 10001.
 - Compose: приложение `app`, рабочая БД `db`, отдельная `test-db`, контейнер `tests`.
 - Все push и pull_request запускают линтер/тесты. Публикация — только push main после успеха.
-- Реальный красный PR, исправленный зелёный запуск, merge и публикация GHCR подтверждены ниже.
+- Реальный красный PR, исправленный зелёный запуск, merge и публикация в GHCR и Docker Hub подтверждены ниже.
 
-**Docker Hub пока не опубликован:** необходимы пользовательские repository secrets
-`DOCKERHUB_USERNAME` и `DOCKERHUB_TOKEN`. Зелёный CI сам по себе не означает,
-что этот необязательный до настройки секретов шаг выполнился: при отсутствии
-учётных данных workflow явно печатает предупреждение и NOT published.
-Это ограничение не выдаётся за полную сдачу требования двух реестров.
+**Оба реестра опубликованы.** После настройки repository secrets запуск
+[CI 40246205211](https://github.com/WhyNot-png/anime-data-engineering/actions/runs/40246205211)
+завершился успешно. Публичная доступность Docker Hub дополнительно проверена
+анонимным запросом API: HTTP 200 для тега полного SHA. Ранние запуски без
+учётных данных сохранены ниже как история настройки, а не текущее ограничение.
 
 ## 1. Обязательные тесты
 
@@ -165,11 +165,11 @@ merge-коммит `3d3ed241b56484cf0d8c558a38e3f456ae341e8d`. Ошибочны�
 в итоговое содержимое main. Для публикации образов проверяется отдельный запуск
 этого merge-коммита на main, а не этот скриншот со skipped build.
 
-### Успешный pipeline main и публикация GHCR
+### Первый успешный pipeline main: публикация GHCR до настройки Docker Hub
 
 [CI 40244902812](https://github.com/WhyNot-png/anime-data-engineering/actions/runs/40244902812)
 на merge-коммите завершился **Success**, включая job `Build and publish images`.
-Контейнер прошёл проверку UID=10001, GHCR опубликован. **Docker Hub не опубликован**:
+Контейнер прошёл проверку UID=10001, GHCR опубликован. **В этом раннем запуске Docker Hub ещё не опубликован**:
 внизу скриншота сохранено реальное предупреждение об отсутствии secrets.
 Это не замаскировано зелёным статусом общего pipeline.
 
@@ -180,6 +180,7 @@ merge-коммит `3d3ed241b56484cf0d8c558a38e3f456ae341e8d`. Ошибочны�
 | PR с неверным ожиданием | dfab1d9c | Failure, API PostgreSQL tests exit 1 | [40244404795](https://github.com/WhyNot-png/anime-data-engineering/actions/runs/40244404795) |
 | Исправленная ветка PR | 7ec01bc8 | Success, build skipped вне main | [40244740475](https://github.com/WhyNot-png/anime-data-engineering/actions/runs/40244740475) |
 | Merge main | 3d3ed241 | Success, GHCR опубликован, Docker Hub отсутствует | [40244902812](https://github.com/WhyNot-png/anime-data-engineering/actions/runs/40244902812) |
+| После настройки secrets | b6782fb6 | Success, оба реестра опубликованы; Docker Hub API HTTP 200 | [40246205211](https://github.com/WhyNot-png/anime-data-engineering/actions/runs/40246205211) |
 
 
 ## 7. Реестры образов
@@ -204,22 +205,30 @@ docker pull ghcr.io/whynot-png/anime-task-manager@sha256:7f308e677c438447143b1fb
 автоматический `GITHUB_TOKEN`; личный PAT не передавался и не сохранялся.
 `latest` будет обновляться последующими push main; SHA и digest фиксируют конкретный образ.
 
-### Docker Hub — проверка после настройки secrets
+### Docker Hub
 
-Владелец сообщил о добавлении обоих secrets. Следующий push main запускает
-реальную проверку публикации; до её успеха образ не объявляется опубликованным.
-Для настройки использованы [Repository Actions secrets](https://github.com/WhyNot-png/anime-data-engineering/settings/secrets/actions).
+**Опубликованный публичный образ:**
+[churovaa/anime-task-manager](https://hub.docker.com/r/churovaa/anime-task-manager).
 
-Необходимые ключи в [Repository Actions secrets](https://github.com/WhyNot-png/anime-data-engineering/settings/secrets/actions):
+Проверенный тег: `b6782fb6147121ca92127b68d91035caaf1e210b`.
+Анонимный запрос Docker Hub API к этому тегу вернул **HTTP 200**.
+Digest: `sha256:213ee95b73838f4e7fc1387a204baf4fff78963653dffed11038d12912288ea0`.
+[Протокол проверки](evidence/dockerhub-publication.json).
 
-- `DOCKERHUB_USERNAME` — логин Docker Hub;
-- `DOCKERHUB_TOKEN` — отдельный Docker Hub access token с правами чтения/записи,
-  без права удаления, если оно не требуется. Не обычный пароль аккаунта.
+```bash
+docker pull churovaa/anime-task-manager:b6782fb6147121ca92127b68d91035caaf1e210b
+# Неизменяемая ссылка по содержимому
+docker pull churovaa/anime-task-manager@sha256:213ee95b73838f4e7fc1387a204baf4fff78963653dffed11038d12912288ea0
+```
 
-Секреты не следует присылать в чат или добавлять в `.env.example`/репозиторий.
-После настройки нужен новый push main, поскольку публикация намеренно не выполняется
-на pull_request и workflow_dispatch. Фактический путь будет
-`docker.io/<логин>/anime-task-manager`, теги latest и SHA коммита.
+Публикация подтверждена успешным [запуском CI](https://github.com/WhyNot-png/anime-data-engineering/actions/runs/40246205211)
+и независимой проверкой публичного тега. `latest` обновляется при следующих push main;
+для воспроизводимости используются полный SHA или digest.
+
+Учётные данные хранятся в GitHub Actions repository secrets:
+`DOCKERHUB_USERNAME` и `DOCKERHUB_TOKEN`. Токен не включён в репозиторий
+или отчёт. Публикация выполняется только после успешных проверок при push main,
+не при pull_request или workflow_dispatch.
 
 ## 8. Ответы на контрольные вопросы
 
@@ -251,5 +260,3 @@ docker pull ghcr.io/whynot-png/anime-task-manager@sha256:7f308e677c438447143b1fb
    миграцию одновременно. Отдельный шаг CD даёт контролируемый однократный запуск
    и отдельные права/логи, но требует оркестрации и совместимости старого/нового кода
    со схемой; резервные копии и ручная проверка миграций нужны в обоих вариантах.
-
-Настройка secrets подтверждена владельцем; результат нового запуска проверяется отдельно.
