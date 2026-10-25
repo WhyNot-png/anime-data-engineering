@@ -21,7 +21,7 @@ def on_page_markdown(markdown: str, **kwargs: object) -> str:
 def on_page_content(html: str, page: object, **kwargs: object) -> str:
     if "<!-- experiment-chart -->" not in html:
         return html
-    chart = (ROOT / "docs/generated/chart.html").read_text()
+    chart = (ROOT / "docs/generated/chart.html").read_text(encoding="utf-8")
     url = get_relative_url("assets/vendor/chart.umd.js", page.url)
     chart = chart.replace("../assets/vendor/chart.umd.js", url)
     return html.replace("<!-- experiment-chart -->", chart)

@@ -24,7 +24,7 @@ def timed(command: list[str], cwd: Path, label: str) -> float:
     result = subprocess.run(command, cwd=cwd, text=True, capture_output=True)
     if result.returncode:
         log = ROOT / ".cache" / f"benchmark-error-{label}.txt"
-        log.write_text(result.stdout + result.stderr)
+        log.write_text(result.stdout + result.stderr, encoding="utf-8")
         raise RuntimeError(f"{label} failed; inspect {log}")
     return time.perf_counter() - start
 
@@ -171,7 +171,9 @@ def main() -> None:
     }
     destination = ROOT / "docs/evidence/ssg-benchmark.json"
     destination.parent.mkdir(parents=True, exist_ok=True)
-    destination.write_text(json.dumps(evidence, ensure_ascii=False, indent=2) + "\n")
+    destination.write_text(
+        json.dumps(evidence, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
 
 
 if __name__ == "__main__":

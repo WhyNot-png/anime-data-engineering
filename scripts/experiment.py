@@ -98,10 +98,10 @@ def render_chart(facts: dict[str, Any], template: str) -> str:
 
 def main() -> None:
     started = time.perf_counter()
-    params = json.loads((ROOT / "research/parameters.json").read_text())
+    params = json.loads((ROOT / "research/parameters.json").read_text(encoding="utf-8"))
     source = ROOT / "research/anime-metrics.csv"
     template_path = ROOT / "scripts/chart-template.html"
-    template = template_path.read_text() if template_path.exists() else ""
+    template = template_path.read_text(encoding="utf-8") if template_path.exists() else ""
     key_parts = [
         source.read_bytes(),
         (ROOT / "research/parameters.json").read_bytes(),
@@ -115,10 +115,10 @@ def main() -> None:
     cached = cache_dir / f"{digest}.json"
     hit = cached.exists()
     if hit:
-        facts = json.loads(cached.read_text())
+        facts = json.loads(cached.read_text(encoding="utf-8"))
     else:
         facts = calculate(source, params)
-        cached.write_text(json.dumps(facts, ensure_ascii=False, indent=2) + "\n")
+        cached.write_text(json.dumps(facts, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     compute_ms = (time.perf_counter() - started) * 1000
     commit = (
         os.environ.get("GITHUB_SHA")
@@ -137,13 +137,15 @@ def main() -> None:
     evidence = {"metadata": metadata, "facts": facts}
     out = ROOT / "docs/generated"
     out.mkdir(parents=True, exist_ok=True)
-    (out / "evidence.json").write_text(json.dumps(evidence, ensure_ascii=False, indent=2) + "\n")
+    (out / "evidence.json").write_text(
+        json.dumps(evidence, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
     with (out / "summary.csv").open("w", newline="", encoding="utf-8") as stream:
         writer = csv.DictWriter(stream, fieldnames=["format", "count", "mean_score"])
         writer.writeheader()
         writer.writerows(facts["groups"])
     if template:
-        (out / "chart.html").write_text(render_chart(facts, template))
+        (out / "chart.html").write_text(render_chart(facts, template), encoding="utf-8")
     rows = facts["groups"]
     table = "\n".join(f"| {r['format']} | {r['count']} | {r['mean_score']:.3f} |" for r in rows)
     page = f"""# Результаты эксперимента
@@ -193,7 +195,7 @@ LaTeX преобразуется при сборке в нативный MathML 
 
 Источник и очистка описаны в [P3](p3.md); ограничения и методика — в [отчёте](report.md).
 """
-    (ROOT / "docs/results.md").write_text(page)
+    (ROOT / "docs/results.md").write_text(page, encoding="utf-8")
     print(json.dumps({"cache_hit": hit, "eligible": facts["eligible"], "ms": compute_ms}))
 
 

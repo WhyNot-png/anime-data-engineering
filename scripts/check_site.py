@@ -21,17 +21,17 @@ class Assets(HTMLParser):
 
 def main() -> None:
     root = Path("site").resolve()
-    index = (root / "index.html").read_text()
-    results = (root / "results/index.html").read_text()
+    index = (root / "index.html").read_text(encoding="utf-8")
+    results = (root / "results/index.html").read_text(encoding="utf-8")
     assert "ANIME-RESEARCH-LAB3" in index
     assert "<math" in results
     assert "canonicalBars" in results
-    search = json.loads((root / "search/search_index.json").read_text())
+    search = json.loads((root / "search/search_index.json").read_text(encoding="utf-8"))
     assert len(search["docs"]) > 5
     checked = 0
     for file in root.rglob("*.html"):
         parser = Assets()
-        parser.feed(file.read_text())
+        parser.feed(file.read_text(encoding="utf-8"))
         for url in parser.urls:
             parsed = urlsplit(url)
             if parsed.scheme in {"http", "https"} or parsed.netloc:

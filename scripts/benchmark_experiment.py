@@ -38,7 +38,7 @@ def main() -> None:
             shutil.rmtree(ROOT / ".cache/experiments", ignore_errors=True)
             cold.append(run())
             warm.append(run())
-        before = json.loads((ROOT / "docs/generated/evidence.json").read_text())
+        before = json.loads((ROOT / "docs/generated/evidence.json").read_text(encoding="utf-8"))
         rows = list(csv.DictReader(io.StringIO(original.decode())))
         changed = [row for row in rows if row["mal_id"] != "1"]
         assert len(changed) == len(rows) - 1
@@ -48,9 +48,9 @@ def main() -> None:
             writer.writerows(changed)
         settings = json.loads(parameters)
         settings["dataset_version"] = "controlled-demo-without-mal-id-1"
-        params.write_text(json.dumps(settings) + "\n")
+        params.write_text(json.dumps(settings) + "\n", encoding="utf-8")
         modified = run()
-        after = json.loads((ROOT / "docs/generated/evidence.json").read_text())
+        after = json.loads((ROOT / "docs/generated/evidence.json").read_text(encoding="utf-8"))
         assert before["facts"]["eligible"] == after["facts"]["eligible"] + 1
         assert modified["cache_hit"] is False
         metrics = {
@@ -77,7 +77,7 @@ def main() -> None:
             },
         }
         out = ROOT / "docs/evidence/p3-benchmark.json"
-        out.write_text(json.dumps(metrics, ensure_ascii=False, indent=2) + "\n")
+        out.write_text(json.dumps(metrics, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         print(
             json.dumps(
                 {

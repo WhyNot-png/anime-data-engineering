@@ -10,7 +10,8 @@ from scripts import experiment
 
 def sample(path: Path) -> Path:
     path.write_text(
-        "mal_id,type,score,scored_by\n1,TV,8.0,1000\n2,TV,,\n3,Movie,7.0,999\n4,TV,6.0,2000\n"
+        "mal_id,type,score,scored_by\n1,TV,8.0,1000\n2,TV,,\n3,Movie,7.0,999\n4,TV,6.0,2000\n",
+        encoding="utf-8",
     )
     return path
 
@@ -34,7 +35,7 @@ def test_duplicate_ids_are_rejected(tmp_path: Path) -> None:
 @pytest.mark.parametrize("score", ["nan", "inf", "-1", "11"])
 def test_invalid_score_is_not_silently_treated_as_zero(tmp_path: Path, score: str) -> None:
     path = tmp_path / "invalid.csv"
-    path.write_text(f"mal_id,type,score,scored_by\n1,TV,{score},1000\n")
+    path.write_text(f"mal_id,type,score,scored_by\n1,TV,{score},1000\n", encoding="utf-8")
     with pytest.raises(ValueError, match="Invalid"):
         experiment.calculate(path, {"min_votes": 1000})
 
@@ -45,30 +46,34 @@ def test_cache_invalidation_and_fresh_build_metadata(
     (tmp_path / "research").mkdir()
     sample(tmp_path / "research/anime-metrics.csv")
     params = tmp_path / "research/parameters.json"
-    params.write_text(json.dumps({"min_votes": 1000, "dataset_version": "test-v1"}))
-    (tmp_path / "uv.lock").write_text("test-lock")
+    params.write_text(
+        json.dumps({"min_votes": 1000, "dataset_version": "test-v1"}), encoding="utf-8"
+    )
+    (tmp_path / "uv.lock").write_text("test-lock", encoding="utf-8")
     monkeypatch.setattr(experiment, "ROOT", tmp_path)
     monkeypatch.setenv("GITHUB_SHA", "commit-one")
     out = tmp_path / "docs/generated/evidence.json"
     experiment.main()
-    first = json.loads(out.read_text())
+    first = json.loads(out.read_text(encoding="utf-8"))
     assert first["metadata"]["cache_hit"] is False
     monkeypatch.setenv("GITHUB_SHA", "commit-two")
     experiment.main()
-    second = json.loads(out.read_text())
+    second = json.loads(out.read_text(encoding="utf-8"))
     assert second["metadata"]["cache_hit"] is True
     assert second["metadata"]["git_commit"] == "commit-two"
     assert second["metadata"]["cache_key"] == first["metadata"]["cache_key"]
-    params.write_text(json.dumps({"min_votes": 1500, "dataset_version": "test-v2"}))
+    params.write_text(
+        json.dumps({"min_votes": 1500, "dataset_version": "test-v2"}), encoding="utf-8"
+    )
     experiment.main()
-    third = json.loads(out.read_text())
+    third = json.loads(out.read_text(encoding="utf-8"))
     assert third["metadata"]["cache_hit"] is False
     assert third["facts"]["eligible"] == 1
     assert third["metadata"]["cache_key"] != first["metadata"]["cache_key"]
     with (tmp_path / "research/anime-metrics.csv").open("a") as stream:
         stream.write("5,Movie,9.0,2000\n")
     experiment.main()
-    fourth = json.loads(out.read_text())
+    fourth = json.loads(out.read_text(encoding="utf-8"))
     assert fourth["metadata"]["cache_hit"] is False
     assert fourth["facts"]["eligible"] == 2
 
