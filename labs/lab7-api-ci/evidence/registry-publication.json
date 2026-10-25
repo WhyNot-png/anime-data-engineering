@@ -1,0 +1,11 @@
+{
+  "image": "ghcr.io/whynot-png/anime-task-manager",
+  "tag": "3d3ed241b56484cf0d8c558a38e3f456ae341e8d",
+  "run_url": "https://github.com/WhyNot-png/anime-data-engineering/actions/runs/40244902812",
+  "pipeline": "success",
+  "anonymous_pull": true,
+  "manifest_status": 200,
+  "digest": "sha256:7f308e677c438447143b1fba21245895f61a6e34bb8d24195f015611e1f91c0e",
+  "docker_hub_published": false,
+  "docker_hub_reason": "Repository secrets DOCKERHUB_USERNAME / DOCKERHUB_TOKEN missing; explicit CI warning observed."
+}

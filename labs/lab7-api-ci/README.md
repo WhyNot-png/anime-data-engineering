@@ -14,7 +14,7 @@
 - Многоэтапный Dockerfile: runtime-deps, test-deps, runtime, test; UID/GID 10001.
 - Compose: приложение `app`, рабочая БД `db`, отдельная `test-db`, контейнер `tests`.
 - Все push и pull_request запускают линтер/тесты. Публикация — только push main после успеха.
-- Реальные доказательства PR и публикаций добавляются после завершения соответствующих запусков.
+- Реальный красный PR, исправленный зелёный запуск, merge и публикация GHCR подтверждены ниже.
 
 **Docker Hub пока не опубликован:** необходимы пользовательские repository secrets
 `DOCKERHUB_USERNAME` и `DOCKERHUB_TOKEN`. Зелёный CI сам по себе не означает,
@@ -153,18 +153,56 @@ contents:read. Docker login получает токен через stdin, а н�
 `assert 201 == 418`, 1 failed, 40 passed. Полный runner log в анонимном интерфейсе
 GitHub требует входа, поэтому локальный вывод не назван выгрузкой лога раннера.
 
-В этом же PR неверное ожидание возвращено на 201. Успешный запуск и merge будут
-подтверждены отдельно; ошибочный вариант не будет слит в main.
+В этом же PR ожидание исправлено на 201, коммит `7ec01bc83e676a05f372b503bb708eac21617658`.
+[Повторный CI 40244740475](https://github.com/WhyNot-png/anime-data-engineering/actions/runs/40244740475)
+завершился **Success**: API lint, PostgreSQL Docker-тесты и все 4 job прежней матрицы
+зелёные. Build здесь корректно пропущен, потому что это не push main.
+
+![Успешный pipeline исправленной ветки PR](screenshots/pipeline-success-pr.svg)
+
+После зелёного запуска [PR №3 слит](https://github.com/WhyNot-png/anime-data-engineering/pull/3),
+merge-коммит `3d3ed241b56484cf0d8c558a38e3f456ae341e8d`. Ошибочный тест не попал
+в итоговое содержимое main. Для публикации образов проверяется отдельный запуск
+этого merge-коммита на main, а не этот скриншот со skipped build.
+
+### Успешный pipeline main и публикация GHCR
+
+[CI 40244902812](https://github.com/WhyNot-png/anime-data-engineering/actions/runs/40244902812)
+на merge-коммите завершился **Success**, включая job `Build and publish images`.
+Контейнер прошёл проверку UID=10001, GHCR опубликован. **Docker Hub не опубликован**:
+внизу скриншота сохранено реальное предупреждение об отсутствии secrets.
+Это не замаскировано зелёным статусом общего pipeline.
+
+![Успешный main pipeline с публикацией GHCR](screenshots/pipeline-success-main.svg)
+
+| Этап | Коммит | Результат | Ссылка |
+| --- | --- | --- | --- |
+| PR с неверным ожиданием | dfab1d9c | Failure, API PostgreSQL tests exit 1 | [40244404795](https://github.com/WhyNot-png/anime-data-engineering/actions/runs/40244404795) |
+| Исправленная ветка PR | 7ec01bc8 | Success, build skipped вне main | [40244740475](https://github.com/WhyNot-png/anime-data-engineering/actions/runs/40244740475) |
+| Merge main | 3d3ed241 | Success, GHCR опубликован, Docker Hub отсутствует | [40244902812](https://github.com/WhyNot-png/anime-data-engineering/actions/runs/40244902812) |
+
 
 ## 7. Реестры образов
 
 ### GHCR
 
-Ожидаемое имя после первого успешного push main: `ghcr.io/whynot-png/anime-task-manager`.
-До проверки фактической публикации это не является утверждением о наличии образа.
-Для первой публикации используется автоматический `GITHUB_TOKEN`, ручной PAT не нужен.
-Новая упаковка GHCR может быть private по умолчанию: владелец должен включить public
-в Settings пакета, если преподавателю нужен анонимный `docker pull`.
+**Опубликованный публичный образ:**
+[GitHub Packages / anime-task-manager](https://github.com/WhyNot-png/anime-data-engineering/pkgs/container/anime-task-manager).
+
+Имя: `ghcr.io/whynot-png/anime-task-manager`. Есть теги `latest` и полный SHA
+коммита. Для точного повторения проверенной публикации:
+
+```bash
+docker pull ghcr.io/whynot-png/anime-task-manager:3d3ed241b56484cf0d8c558a38e3f456ae341e8d
+# Эквивалентная неизменяемая ссылка по digest
+docker pull ghcr.io/whynot-png/anime-task-manager@sha256:7f308e677c438447143b1fba21245895f61a6e34bb8d24195f015611e1f91c0e
+```
+
+Анонимный запрос к registry manifest вернул **HTTP 200**; это отдельная проверка,
+а не вывод только из зелёного CI. Страница пакета также доступна с HTTP 200.
+[Машинный протокол](evidence/registry-publication.json). Для GHCR использован
+автоматический `GITHUB_TOKEN`; личный PAT не передавался и не сохранялся.
+`latest` будет обновляться последующими push main; SHA и digest фиксируют конкретный образ.
 
 ### Docker Hub — требуется настройка владельцем
 

@@ -1,0 +1,9 @@
+{
+  "pull_request": "https://github.com/WhyNot-png/anime-data-engineering/pull/3",
+  "corrected_commit": "7ec01bc83e676a05f372b503bb708eac21617658",
+  "successful_run": "https://github.com/WhyNot-png/anime-data-engineering/actions/runs/40244740475",
+  "conclusion": "success",
+  "merged": true,
+  "merge_sha": "3d3ed241b56484cf0d8c558a38e3f456ae341e8d",
+  "build": "skipped on non-main; not claimed as publication"
+}
