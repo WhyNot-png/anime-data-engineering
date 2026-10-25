@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches: [main, lab1-compliance]
+    tags: [lab1]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Python ${{ matrix.python }} / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python: ["3.12.12", "3.13.9"]
+    env:
+      UV_PYTHON: ${{ matrix.python }}
+      UV_PYTHON_DOWNLOADS: never
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Set up uv
+        uses: astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e # v6
+        with:
+          version: "0.13.5"
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+      - name: Install locked dependencies
+        run: uv sync --locked
+      - name: Lint
+        run: uv run --locked ruff check .
+      - name: Formatting
+        run: uv run --locked ruff format --check .
+      - name: Strict typing (src and tests)
+        run: uv run --locked mypy
+      - name: Tests and coverage (minimum 70 percent)
+        run: uv run --locked pytest
+      - name: CLI help
+        run: uv run --locked rg --help
+      - name: CLI configuration (no secrets required)
+        run: uv run --locked rg check-config
+      - name: Repository hygiene
+        run: uv run --locked python scripts/check_repository.py
+      - name: Pre-commit (same tools and lockfile)
+        run: uv run --locked pre-commit run --all-files --show-diff-on-failure
+      - name: Build distributable package
+        run: uv build --no-sources
