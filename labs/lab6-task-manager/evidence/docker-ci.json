@@ -1,0 +1,73 @@
+{
+  "run_url": "https://github.com/WhyNot-png/anime-data-engineering/actions/runs/40242948467",
+  "head_sha": "4b791b7385ded5d3a6d80078d00cb9086f6cf06e",
+  "conclusion": "success",
+  "jobs": [
+    {
+      "name": "api",
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Locked dependencies and lint",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Start real Docker Compose API and PostgreSQL",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Real HTTP smoke through container",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Prepare isolated PostgreSQL test database",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Integration tests and migration drift",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Container logs and cleanup",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ]
+}
