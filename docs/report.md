@@ -131,6 +131,29 @@ GitHub Actions и официальный GitHub Pages artifact/deploy pipeline.
 - **Решение:** заменены ссылки на проверяемые страницы без выдуманных якорей; повторная strict-сборка успешна.
 - [Лог](evidence/errors/strict-russian-anchors.txt).
 
+## Реальные запуски GitHub Actions
+
+Скриншоты ниже получены с публичных страниц GitHub, не из нарисованной имитации.
+Успешный запуск доказывает **сборку** ветки, а не публикацию: deploy на ней пропущен.
+Отрицательный запуск выполнен в отдельной ветке, она не предназначена для merge.
+
+| Запуск | Результат | Длительность по UI, с | Область |
+| --- | --- | ---: | --- |
+| [40239002945](https://github.com/WhyNot-png/anime-data-engineering/actions/runs/40239002945) | success | 17 | Build only; deploy skipped on non-main branch |
+| [40239057188](https://github.com/WhyNot-png/anime-data-engineering/actions/runs/40239057188) | failure (intentional missing internal link) | 19 | Strict build failed; deploy skipped |
+
+[Машинный протокол](evidence/ci-runs.json).
+
+![Реальный успешный build, deploy пропущен](screenshots/actions-success.svg)
+
+![Реальный намеренно проваленный build](screenshots/actions-failure.svg)
+
+После добавления научной стадии исходная матрица выявила сбой тестов только на
+Windows (`Process completed with exit code 1`). Гипотеза — системная кодировка
+при записи русскоязычного Markdown. Чтение/запись явно переведены на UTF-8;
+[повторная матрица Python 3.12/3.13 × Ubuntu/Windows прошла](https://github.com/WhyNot-png/anime-data-engineering/actions/runs/40239260121).
+Точное исключение из закрытых без входа логов не выдумывается.
+
 ## Текст pipeline с комментариями
 
 ```yaml
@@ -212,7 +235,8 @@ jobs:
           SITE_URL: ${{ steps.deployment.outputs.page_url }}
         run: |
           for attempt in 1 2 3 4 5; do
-            if curl --fail --silent --show-error "$SITE_URL" -o /tmp/published.html &&                grep -q 'ANIME-RESEARCH-LAB3' /tmp/published.html; then
+            status=$(curl --fail --silent --show-error --write-out "%{http_code}" "$SITE_URL" -o /tmp/published.html) || status=000
+            if [ "$status" = "200" ] && grep -q 'ANIME-RESEARCH-LAB3' /tmp/published.html; then
               echo "HTTP 200 and control marker confirmed at $SITE_URL"
               exit 0
             fi

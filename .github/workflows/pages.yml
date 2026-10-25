@@ -76,7 +76,8 @@ jobs:
           SITE_URL: ${{ steps.deployment.outputs.page_url }}
         run: |
           for attempt in 1 2 3 4 5; do
-            if curl --fail --silent --show-error "$SITE_URL" -o /tmp/published.html &&                grep -q 'ANIME-RESEARCH-LAB3' /tmp/published.html; then
+            status=$(curl --fail --silent --show-error --write-out "%{http_code}" "$SITE_URL" -o /tmp/published.html) || status=000
+            if [ "$status" = "200" ] && grep -q 'ANIME-RESEARCH-LAB3' /tmp/published.html; then
               echo "HTTP 200 and control marker confirmed at $SITE_URL"
               exit 0
             fi
