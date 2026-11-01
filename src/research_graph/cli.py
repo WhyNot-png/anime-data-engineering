@@ -9,8 +9,10 @@ from pydantic import ValidationError
 from research_graph import __version__
 from research_graph.config import get_settings
 from research_graph.logging_setup import setup_logging
+from research_graph.search_cli import app as anime_app
 
 app = typer.Typer(no_args_is_help=True, help="Anime data engineering research scaffold.")
+app.add_typer(anime_app, name="anime")
 
 
 @app.command()
