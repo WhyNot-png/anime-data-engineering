@@ -13,7 +13,7 @@ import re
 import sqlite3
 import struct
 import tempfile
-from collections.abc import Iterator, Sequence
+from collections.abc import Callable, Iterator, Sequence
 from contextlib import closing
 from dataclasses import dataclass
 from pathlib import Path
@@ -161,13 +161,20 @@ def normalize_vector(vector: Sequence[float], dimension: int | None = None) -> l
 
 
 def build_index(
-    records: Sequence[Anime], output: Path, encoder: Encoder, *, batch_size: int = 32
+    records: Sequence[Anime],
+    output: Path,
+    encoder: Encoder,
+    *,
+    batch_size: int = 32,
+    progress: Callable[[int, int], None] | None = None,
 ) -> IndexInfo:
     """Build atomically: a failed rebuild never overwrites the previous index."""
     if not records:
         raise ValueError("Cannot index an empty catalog.")
     if not 1 <= batch_size <= 512:
         raise ValueError("Batch size must be between 1 and 512.")
+    # Similar-length batches reduce padding without changing texts or vectors.
+    records = sorted(records, key=lambda record: len(record.document))
     if output.exists():
         try:
             read_index_info(output)
@@ -206,6 +213,8 @@ def build_index(
                             blob,
                         ),
                     )
+                if progress is not None:
+                    progress(start + len(batch), len(records))
             assert dimension is not None
             info = IndexInfo(encoder.model_name, encoder.revision, dimension, len(records))
             connection.execute(

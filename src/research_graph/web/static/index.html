@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <meta
+      name="description"
+      content="Локальный семантический поиск аниме по описанию сюжета."
+    />
+    <title>Anime Atlas — поиск по сюжету</title>
+    <link rel="stylesheet" href="/assets/style.css" />
+    <script src="/assets/app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip" href="#query">Перейти к поиску</a>
+    <header class="header wrap">
+      <a class="brand" href="/" aria-label="Anime Atlas — главная"
+        ><span class="brand-mark" aria-hidden="true">A</span>Anime Atlas</a
+      >
+      <span class="local-badge"
+        ><span aria-hidden="true" class="status-dot"></span>На твоём
+        компьютере</span
+      >
+    </header>
+    <main class="wrap">
+      <section class="intro" aria-labelledby="page-title">
+        <p class="eyebrow">ПОИСК ПО СМЫСЛУ, А НЕ ПО КЛЮЧЕВЫМ СЛОВАМ</p>
+        <h1 id="page-title">Помнишь сюжет?<br />Начни с описания.</h1>
+        <p class="lead">
+          Герои, странные события, обрывки воспоминаний.<br
+            class="desktop-break"
+          />
+          Расскажи, что помнишь, — найдём похожие аниме в каталоге.
+        </p>
+      </section>
+      <section class="search-panel" aria-label="Поиск аниме">
+        <form id="search-form">
+          <label for="query">Что происходило в аниме?</label>
+          <textarea
+            id="query"
+            name="query"
+            rows="4"
+            minlength="3"
+            maxlength="4000"
+            required
+            aria-describedby="query-hint"
+            placeholder="Например: парень находит тетрадь, которая убивает людей, если записать в неё имя…"
+          ></textarea>
+          <div class="form-actions">
+            <p id="query-hint" class="hint">
+              Больше деталей — полезнее результаты.
+            </p>
+            <div class="controls">
+              <label for="top-k" class="sr-only">Количество результатов</label
+              ><select id="top-k" name="top_k">
+                <option value="3">3 варианта</option>
+                <option value="5">5 вариантов</option>
+                <option value="10" selected>10 вариантов</option></select
+              ><button type="submit" id="search-button">
+                <span id="button-label">Найти аниме</span>
+                <span aria-hidden="true">↗</span>
+              </button>
+            </div>
+          </div>
+        </form>
+        <div class="examples" aria-label="Примеры описаний">
+          <span class="examples-label">Попробуй:</span
+          ><button type="button" class="example" data-example="notebook">
+            Таинственная тетрадь</button
+          ><button type="button" class="example" data-example="pirates">
+            Пираты и сокровища</button
+          ><button type="button" class="example" data-example="spirits">
+            Мир духов
+          </button>
+        </div>
+      </section>
+      <div class="catalog-line">
+        <p id="catalog-status" role="status">Проверяем локальный каталог…</p>
+        <p>Эмбеддинги · E5</p>
+      </div>
+      <section id="results-section" aria-labelledby="results-title" hidden>
+        <div class="results-header">
+          <div>
+            <p class="eyebrow">ВОЗМОЖНО, ТЫ ИЩЕШЬ</p>
+            <h2 id="results-title">Ближайшие по смыслу</h2>
+          </div>
+          <p class="hint">Сходство — не вероятность ответа</p>
+        </div>
+        <ol id="results" class="results"></ol>
+      </section>
+      <p
+        id="search-status"
+        class="search-status"
+        role="status"
+        aria-live="polite"
+      ></p>
+      <div id="error" class="error" role="alert" hidden></div>
+      <aside id="empty-state" class="empty-state">
+        <span class="empty-symbol" aria-hidden="true">↳</span>
+        <div>
+          <h2>Не нужно помнить название</h2>
+          <p>
+            Попробуй описать особенную деталь: способность героя, место или
+            необычный предмет.
+          </p>
+        </div>
+      </aside>
+      <footer>
+        <p>
+          <strong>Не только релизы 2025 года.</strong> Полный набор проекта —
+          снимок MyAnimeList за июль 2025 года с тайтлами разных лет. Поиск
+          использует только записи выбранного индекса с пригодным синопсисом.
+        </p>
+        <p>
+          Тексты обрабатываются локально. Совпадение не гарантировано: самые
+          близкие варианты найдутся даже тогда, когда нужного аниме нет в
+          каталоге.
+        </p>
+      </footer>
+    </main>
+  </body>
+</html>

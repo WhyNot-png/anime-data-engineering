@@ -176,3 +176,15 @@ def test_corrupted_index_is_rejected(tmp_path: Path, sql: str) -> None:
         connection.execute(sql)
     with pytest.raises(ValueError):
         search_index(path, "query", FakeEncoder())
+
+
+def test_index_progress_callback(tmp_path: Path) -> None:
+    updates: list[tuple[int, int]] = []
+    build_index(
+        catalog(),
+        tmp_path / "search.db",
+        FakeEncoder(),
+        batch_size=1,
+        progress=lambda done, total: updates.append((done, total)),
+    )
+    assert updates == [(1, 2), (2, 2)]

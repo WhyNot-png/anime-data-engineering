@@ -26,15 +26,18 @@ CASES = (
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--index", type=Path, required=True)
+    parser.add_argument("--top-k", type=int, choices=range(1, 51), default=10)
     args = parser.parse_args()
     read_index_info(args.index)
     encoder = SentenceEncoder()
     success = True
     for expected, query in CASES:
-        hits = search_index(args.index, query, encoder, top_k=5)
+        hits = search_index(args.index, query, encoder, top_k=args.top_k)
         rank = next((i for i, hit in enumerate(hits, start=1) if hit.anime.id == expected), None)
         success = success and rank is not None
-        print(f"expected_id={expected}; rank_in_top5={rank}; first={hits[0].anime.title}")
+        print(
+            f"expected_id={expected}; rank_in_top{args.top_k}={rank}; first={hits[0].anime.title}"
+        )
     print("These four queries are smoke checks, not a representative accuracy measurement.")
     return 0 if success else 1
 
