@@ -1,5 +1,24 @@
 # Anime Data Engineering
 
+
+## Поиск аниме по описанию — эмбеддинги
+
+CLI-система семантического поиска: русскоязычное описание пользователя →
+многоязычный E5-эмбеддинг → top-k похожих синопсисов из отдельного SQLite-индекса.
+Модель работает локально на CPU, ключи API не нужны. Старые лабораторные не меняются.
+
+```bash
+uv sync --locked
+uv pip install --index-strategy unsafe-best-match -r requirements-search.txt
+uv run --no-sync rg anime index examples/anime-search-demo.csv --output data/processed/anime_search_demo.db
+uv run --no-sync rg anime search "Парень находит тетрадь, которая убивает людей по записанному имени" --index data/processed/anime_search_demo.db --top-k 3
+```
+
+[Полная инструкция, формат реального CSV и ограничения](docs/anime_search.md).
+Косинусное сходство — не вероятность правильного ответа; программа предлагает
+кандидатов, а не гарантирует однозначное угадывание.
+
+
 ## Задание 7: тестирование, контейнеризация и CI/CD API
 
 [README-отчёт задания 7](labs/lab7-api-ci/README.md): 9 обязательных сценариев,
