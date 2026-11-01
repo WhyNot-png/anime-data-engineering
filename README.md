@@ -14,6 +14,17 @@ uv run --no-sync rg anime index examples/anime-search-demo.csv --output data/pro
 uv run --no-sync rg anime search "Парень находит тетрадь, которая убивает людей по записанному имени" --index data/processed/anime_search_demo.db --top-k 3
 ```
 
+Локальный сайт после построения полного индекса:
+
+```bash
+uv run --no-sync rg anime serve
+```
+
+Затем откройте http://127.0.0.1:8000. Для проверки на демо укажите
+`--index data/processed/anime_search_demo.db`.
+
+**Июль 2025 — дата снимка каталога, а не ограничение по году выпуска аниме.**
+
 [Полная инструкция, формат реального CSV и ограничения](docs/anime_search.md).
 Косинусное сходство — не вероятность правильного ответа; программа предлагает
 кандидатов, а не гарантирует однозначное угадывание.
