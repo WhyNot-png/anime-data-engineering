@@ -497,6 +497,7 @@ footer strong {
   select {
     width: 100%;
     min-width: 0;
+    padding: 0 6px;
   }
   button[type="submit"] {
     min-width: 0;
