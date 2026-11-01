@@ -36,3 +36,6 @@ docs/generated/
 
 # Generated results page; rebuilt with fresh version metadata
 docs/results.md
+
+# Private generated full-catalog archive (source content is not redistributed in Git).
+/anime-full-index*.zip
