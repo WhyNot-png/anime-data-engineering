@@ -37,7 +37,18 @@ def index_command(
             f"Usable: {len(catalog.records)}; skipped: {catalog.skipped}; duplicates: {catalog.duplicates}"
         )
         typer.echo("Loading multilingual model (first run needs Internet). Indexing on CPU...")
-        info = build_index(catalog.records, output, SentenceEncoder(), batch_size=batch_size)
+        encoder = SentenceEncoder()
+        with typer.progressbar(length=len(catalog.records), label="Indexing") as bar:
+            previous = 0
+
+            def report(done: int, total: int) -> None:
+                nonlocal previous
+                bar.update(done - previous)
+                previous = done
+
+            info = build_index(
+                catalog.records, output, encoder, batch_size=batch_size, progress=report
+            )
     except (OSError, ValueError, RuntimeError, sqlite3.Error, csv.Error) as error:
         typer.echo(f"Indexing failed: {error}", err=True)
         raise typer.Exit(code=2) from None
@@ -71,3 +82,27 @@ def search_command(
     for rank, hit in enumerate(results, start=1):
         typer.echo(f"{rank}. {hit.anime.title} [id={hit.anime.id}; cosine={hit.score:.4f}]")
         typer.echo(f"   {hit.anime.synopsis[:350]}")
+
+
+@app.command("serve")
+def serve_command(
+    index: Annotated[Path, typer.Option("--index", "-i")] = DEFAULT_INDEX,
+    port: Annotated[int, typer.Option("--port", min=1024, max=65535)] = 8000,
+) -> None:
+    """Open a loopback-only website. Stop with Ctrl+C; no new web dependencies."""
+    from research_graph.web import LocalAnimeServer
+
+    try:
+        info = read_index_info(index)
+        typer.echo(f"Loading local model for {info.count} titles (first run downloads weights)...")
+        server = LocalAnimeServer(index, SentenceEncoder(), port)
+    except (OSError, ValueError, RuntimeError, sqlite3.Error) as error:
+        typer.echo(f"Cannot start website: {error}", err=True)
+        raise typer.Exit(code=2) from None
+    typer.echo(f"Open http://127.0.0.1:{port} in your browser. Stop with Ctrl+C.")
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        typer.echo("Website stopped.")
+    finally:
+        server.server_close()
