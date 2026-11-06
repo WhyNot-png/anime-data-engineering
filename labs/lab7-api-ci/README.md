@@ -58,7 +58,7 @@ git clone https://github.com/WhyNot-png/anime-data-engineering.git
 cd anime-data-engineering/labs/lab6-task-manager
 uv sync --locked
 # Только отдельная тестовая БД; рабочая tasks не затрагивается.
-docker compose --profile test up -d test-db
+docker compose -f docker-compose.yml -f compose.local-test.yml --profile test up -d test-db
 DATABASE_URL=postgresql+asyncpg://app:app@localhost:5433/tasks_test uv run alembic upgrade head
 TEST_DATABASE_URL=postgresql+asyncpg://app:app@localhost:5433/tasks_test uv run pytest
 uv run ruff check .
@@ -68,6 +68,8 @@ uv run ruff format --check .
 В PowerShell задавайте переменные отдельно через `$env:DATABASE_URL="..."` и
 `$env:TEST_DATABASE_URL="..."`. Верните DATABASE_URL основной БД после миграции.
 Без uv: venv + `pip install -r requirements-dev.txt`, далее `python -m pytest`.
+Для параллельных запусков можно задать `TEST_DB_PORT` и использовать тот же
+порт в URL. В обычном контейнерном прогоне `test-db` не публикует порт на хосте.
 
 ## 3. Тесты полностью через Docker Compose
 
@@ -85,7 +87,7 @@ UID 10001 применяет `alembic upgrade head`, затем выполняе
 
 ```bash
 docker compose stop test-db
-docker compose rm -f test-db
+docker compose rm -fv test-db
 ```
 
 Не выполняйте `docker compose down -v` для обычной очистки тестов: эта команда
@@ -124,15 +126,16 @@ docker run --rm --entrypoint id anime-task-manager:local -u
 push / pull_request
   ├── quality: прежняя матрица Python 3.12/3.13 × Ubuntu/Windows
   └── lint: ruff check + ruff format
-        └── test: multistage test image + PostgreSQL + Alembic + pytest
-              └── build (needs: lint, test, quality; только push main)
+        ├── test: multistage test image + PostgreSQL + Alembic + pytest
+        └── runtime-smoke: реальный runtime + HTTP CRUD + alembic check
+              └── build (needs: lint, test, quality, runtime-smoke; только push main)
                     ├── runtime build + проверка UID=10001
                     ├── push GHCR: latest и полный SHA
                     └── push Docker Hub: latest и полный SHA (нужны secrets)
 ```
 
 На PR, в том числе из форка, образы не публикуются и registry-секреты не нужны.
-При неудаче lint/test/quality job build пропускается из-за `needs` и стандартного
+При неудаче lint/test/quality/runtime-smoke job build пропускается из-за `needs` и стандартного
 условия успеха. GitHub Packages write разрешён только job-у build, остальным —
 contents:read. Docker login получает токен через stdin, а не аргумент командной
 строки. В конце выполняется logout. Образы имеют OCI source label со ссылкой на репозиторий.
@@ -252,7 +255,7 @@ docker pull churovaa/anime-task-manager@sha256:213ee95b73838f4e7fc1387a204baf4ff
    конкретному шагу через `${{ secrets.NAME }}` в env/stdin. В Git они остались бы
    в истории и клонах; маскирование логов не заменяет запрет на вывод секретов.
    Утёкший токен нужно отозвать, а не просто удалить новым коммитом.
-6. **Если test упал.** Build не стартует: `needs: [lint, test, quality]` требует
+6. **Если test упал.** Build не стартует: `needs: [lint, test, quality, runtime-smoke]` требует
    успешного завершения зависимостей. Дополнительно `if` разрешает публикацию
    только для push основной ветки. `always()` для build не используется.
 7. **Где миграции.** На старте контейнера просто для учебного одиночного сервиса,

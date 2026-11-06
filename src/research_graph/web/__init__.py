@@ -2,6 +2,7 @@
 
 import json
 import logging
+import socket
 import sqlite3
 import threading
 from dataclasses import asdict
@@ -14,6 +15,8 @@ from research_graph.semantic_search import Encoder, read_index_info, search_inde
 
 ASSETS = Path(__file__).parent / "static"
 MAX_BODY_BYTES = 65536
+MAX_HANDLERS = 8
+SOCKET_TIMEOUT_SECONDS = 10
 CSP = (
     "default-src 'self'; script-src 'self'; style-src 'self'; "
     "connect-src 'self'; img-src 'self'; base-uri 'none'; "
@@ -34,7 +37,33 @@ class LocalAnimeServer(ThreadingHTTPServer):
         self.index = index.resolve()
         self.encoder = encoder
         self.search_lock = threading.Lock()
+        self.handler_slots = threading.BoundedSemaphore(MAX_HANDLERS)
         super().__init__(("127.0.0.1", port), AnimeHandler)
+
+    def get_request(self) -> tuple[socket.socket, tuple[str, int]]:
+        connection, address = super().get_request()
+        connection.settimeout(SOCKET_TIMEOUT_SECONDS)
+        return connection, address
+
+    def process_request(
+        self, request: socket.socket | tuple[bytes, socket.socket], client_address: tuple[str, int]
+    ) -> None:
+        if not self.handler_slots.acquire(blocking=False):
+            self.shutdown_request(request)
+            return
+        try:
+            super().process_request(request, client_address)
+        except BaseException:
+            self.handler_slots.release()
+            raise
+
+    def process_request_thread(
+        self, request: socket.socket | tuple[bytes, socket.socket], client_address: tuple[str, int]
+    ) -> None:
+        try:
+            super().process_request_thread(request, client_address)
+        finally:
+            self.handler_slots.release()
 
 
 class AnimeHandler(BaseHTTPRequestHandler):
@@ -131,10 +160,9 @@ class AnimeHandler(BaseHTTPRequestHandler):
         if not 0 < length <= MAX_BODY_BYTES or self.headers.get("Transfer-Encoding"):
             self._json(413, {"error": "Запрос слишком большой или пустой."})
             return
-        self.connection.settimeout(10)
         try:
             payload = json.loads(self.rfile.read(length))
-        except (json.JSONDecodeError, UnicodeDecodeError):
+        except (json.JSONDecodeError, UnicodeDecodeError, RecursionError):
             self._json(400, {"error": "Некорректный JSON."})
             return
         except (TimeoutError, OSError):
