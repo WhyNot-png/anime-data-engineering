@@ -2,8 +2,13 @@
 
 import http.client
 import json
+import shutil
+import socket
+import subprocess
 import threading
+import time
 from collections.abc import Iterator, Sequence
+from contextlib import suppress
 from pathlib import Path
 from typing import Literal
 
@@ -157,6 +162,80 @@ def test_bad_http_bodies(server: web.LocalAnimeServer) -> None:
         )[0]
         == 413
     )
+
+
+def test_deep_json_returns_controlled_error(server: web.LocalAnimeServer) -> None:
+    body = b'{"query":' + b"[" * 20_000 + b"0" + b"]" * 20_000 + b"}"
+    assert len(body) < web.MAX_BODY_BYTES
+    status, headers, response = request(
+        server, "POST", "/api/search", body, {"Content-Type": "application/json"}
+    )
+    assert status == 400
+    assert "application/json" in headers["Content-Type"]
+    assert json.loads(response)["error"]
+
+
+@pytest.mark.parametrize("length,expected", [(2, 400), (3, 200), (4000, 200), (4001, 400)])
+def test_query_length_counts_unicode_code_points(
+    server: web.LocalAnimeServer, length: int, expected: int
+) -> None:
+    status, _, _ = request(
+        server,
+        "POST",
+        "/api/search",
+        json.dumps({"query": "🔥" * length}, ensure_ascii=False).encode(),
+        {"Content-Type": "application/json"},
+    )
+    assert status == expected
+
+
+def test_incomplete_connections_are_bounded_and_time_out(
+    server: web.LocalAnimeServer, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(web, "SOCKET_TIMEOUT_SECONDS", 2)
+    clients: list[socket.socket] = []
+
+    def free_slots() -> int:
+        count = 0
+        while count < web.MAX_HANDLERS and server.handler_slots.acquire(blocking=False):
+            count += 1
+        for _ in range(count):
+            server.handler_slots.release()
+        return count
+
+    try:
+        for _ in range(web.MAX_HANDLERS):
+            client = socket.create_connection(("127.0.0.1", server.server_address[1]), timeout=2)
+            client.sendall(b"GET /api/health HTTP/1.1\r\n")
+            clients.append(client)
+        deadline = time.monotonic() + 1.5
+        while free_slots() != 0 and time.monotonic() < deadline:
+            time.sleep(0.01)
+        assert free_slots() == 0
+        extra = socket.create_connection(("127.0.0.1", server.server_address[1]), timeout=2)
+        clients.append(extra)
+        extra.settimeout(1)
+        with suppress(ConnectionResetError):
+            assert extra.recv(1) == b""
+        deadline = time.monotonic() + 4
+        while free_slots() != web.MAX_HANDLERS:
+            assert time.monotonic() < deadline
+            time.sleep(0.01)
+        assert request(server, "GET", "/api/health")[0] == 200
+    finally:
+        for client in clients:
+            client.close()
+
+
+def test_browser_query_validation_counts_code_points() -> None:
+    node = shutil.which("node")
+    if node is None:
+        pytest.skip("Node.js is unavailable")
+    script = Path(__file__).with_name("web_unicode_test.cjs")
+    result = subprocess.run(
+        [node, str(script)], capture_output=True, text=True, timeout=10, check=False
+    )
+    assert result.returncode == 0, result.stdout + result.stderr
 
 
 def test_busy_model_is_not_run_twice(server: web.LocalAnimeServer) -> None:

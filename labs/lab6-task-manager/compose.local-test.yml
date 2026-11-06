@@ -1,0 +1,5 @@
+# Optional host access for running pytest outside Docker. Not used by CI.
+services:
+  test-db:
+    ports:
+      - "127.0.0.1:${TEST_DB_PORT:-5433}:5432"

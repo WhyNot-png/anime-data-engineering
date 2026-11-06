@@ -76,8 +76,9 @@ form.addEventListener("submit", async (event) => {
   event.preventDefault();
   if (pending || !form.reportValidity()) return;
   const description = query.value.trim();
-  if (description.length < 3) {
-    displayError("Добавь хотя бы несколько деталей — нужно от 3 символов.");
+  const length = Array.from(description).length;
+  if (length < 3 || length > 4000) {
+    displayError("Добавь описание: от 3 до 4000 символов.");
     query.focus();
     return;
   }

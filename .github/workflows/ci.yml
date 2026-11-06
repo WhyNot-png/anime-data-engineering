@@ -95,9 +95,38 @@ jobs:
           docker compose --profile test logs --no-color
           docker compose --profile test down -v
 
+  runtime-smoke:
+    name: Runtime container and migration smoke
+    needs: lint
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: labs/lab6-task-manager
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - name: Start runtime container and PostgreSQL
+        run: |
+          docker compose config --quiet
+          docker compose up -d --build app
+          for i in $(seq 1 60); do
+            if curl -fsS http://127.0.0.1:8000/openapi.json -o /dev/null; then break; fi
+            sleep 2
+          done
+          curl -fsS http://127.0.0.1:8000/openapi.json -o /dev/null
+      - name: Real HTTP CRUD and migration drift
+        run: |
+          python3 scripts/smoke_api.py
+          docker compose exec -T app alembic check
+      - name: Container logs and cleanup
+        if: always()
+        run: |
+          docker compose logs --no-color
+          docker compose down -v
+
   build:
     name: Build and publish images
-    needs: [lint, test, quality]
+    needs: [lint, test, quality, runtime-smoke]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-24.04
     timeout-minutes: 15
