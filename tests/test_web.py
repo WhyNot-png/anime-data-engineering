@@ -175,17 +175,15 @@ def test_deep_json_returns_controlled_error(server: web.LocalAnimeServer) -> Non
     assert json.loads(response)["error"]
 
 
-@pytest.mark.parametrize(
-    "query,expected", [("🔥" * 2, 400), ("🔥" * 3, 200), ("🔥" * 4000, 200), ("🔥" * 4001, 400)]
-)
+@pytest.mark.parametrize("length,expected", [(2, 400), (3, 200), (4000, 200), (4001, 400)])
 def test_query_length_counts_unicode_code_points(
-    server: web.LocalAnimeServer, query: str, expected: int
+    server: web.LocalAnimeServer, length: int, expected: int
 ) -> None:
     status, _, _ = request(
         server,
         "POST",
         "/api/search",
-        json.dumps({"query": query}, ensure_ascii=False).encode(),
+        json.dumps({"query": "🔥" * length}, ensure_ascii=False).encode(),
         {"Content-Type": "application/json"},
     )
     assert status == expected
