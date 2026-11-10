@@ -71,7 +71,7 @@ jobs:
           name: coverage-report
           path: anime-portal/htmlcov
           if-no-files-found: ignore
-      - name: SMOKE: живой сервер отвечает на /health и /api/v1/anime
+      - name: "SMOKE: живой сервер отвечает на /health и /api/v1/anime"
         run: |
           uvicorn app.main:app --port 8001 &
           for i in $(seq 1 30); do curl -fsS http://127.0.0.1:8001/health && break || sleep 1; done
