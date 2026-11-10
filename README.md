@@ -1,5 +1,40 @@
 # Anime Data Engineering
 
+## Итоговый проект: Anime Portal — каталог аниме с REST API
+
+![anime-portal CI](https://github.com/WhyNot-png/anime-data-engineering/actions/workflows/anime-portal-ci.yml/badge.svg?branch=main)
+
+Информационная система по дисциплине «Разработка на Python и инженерия данных»:
+REST API на FastAPI для каталога аниме, личных списков просмотра, отзывов и
+аналитики, плюс веб-клиент, работающий через этот API. PostgreSQL 16, 7 связанных
+таблиц (связи один-ко-многим и многие-ко-многим), 5 бизнес-правил в отдельном слое
+`services`, 14 эндпоинтов с пагинацией, фильтрацией и сортировкой, идемпотентный
+ETL из CSV и обратимая миграция Alembic.
+
+Код — [`anime-portal/`](anime-portal/), полный отчёт с ERD, API, бизнес-правилами
+и ETL — [anime-portal/README.md](anime-portal/README.md).
+
+```bash
+cd anime-portal
+docker compose up --build
+```
+
+- интерфейс — http://localhost:8000/ (каталог, «Мой список», аналитика)
+- Swagger — http://localhost:8000/docs
+- health — http://localhost:8000/health
+
+Качество: 72 теста, покрытие 96.73% при пороге CI 70%; ruff и mypy без замечаний.
+Workflow `.github/workflows/anime-portal-ci.yml` поднимает PostgreSQL, прогоняет
+миграции upgrade/downgrade, дважды запускает ETL (проверка идемпотентности),
+тесты с покрытием, smoke живого сервера и `docker compose up`.
+
+Разработка велась в ветках `feature/anime-portal-*`, в main попала через
+[PR #7](https://github.com/WhyNot-png/anime-data-engineering/pull/7) (модели, БД, ETL),
+[PR #8](https://github.com/WhyNot-png/anime-data-engineering/pull/8) (сервисы, API)
+и [PR #9](https://github.com/WhyNot-png/anime-data-engineering/pull/9)
+(клиент, Docker, CI, документация).
+
+---
 
 ## Поиск аниме по описанию — эмбеддинги
 
