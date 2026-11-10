@@ -1,0 +1,18 @@
+mal_id,title,title_english,synopsis,genres,studio,year,episodes,status
+1535,Death Note,Death Note,"Школьник находит тетрадь, в которой можно убить человека, записав его имя. За ним начинает охоту гениальный детектив.",Supernatural;Thriller,Madhouse,2006,37,Finished Airing
+20,Naruto,Naruto,"Сирота тренируется, чтобы стать ниндзя и главой деревни. Внутри него запечатан девятихвостый демон.",Action;Adventure;Fantasy,Pierrot,2002,220,Finished Airing
+21,One Piece,One Piece,"Юный пират собирает команду, чтобы найти легендарное сокровище и стать королём пиратов.",Action;Adventure;Fantasy,Toei Animation,1999,1100,Currently Airing
+199,Sen to Chihiro no Kamikakushi,Spirited Away,"Девочка попадает в мир духов и должна спасти родителей, превращённых в свиней.",Adventure;Fantasy;Drama,Studio Ghibli,2001,1,Finished Airing
+9253,Steins;Gate,Steins;Gate,"Учёный-любитель случайно изобретает способ отправлять сообщения в прошлое и сталкивается с последствиями.",Sci-Fi;Thriller,White Fox,2011,24,Finished Airing
+16498,Shingeki no Kyojin,Attack on Titan,"Человечество живёт за стенами, спасаясь от гигантов. Юноша вступает в разведку после гибели матери.",Action;Drama;Fantasy,Wit Studio,2013,25,Finished Airing
+1,Cowboy Bebop,Cowboy Bebop,"Команда охотников за головами путешествует по Солнечной системе, убегая от собственного прошлого.",Action;Sci-Fi;Drama,Sunrise,1998,26,Finished Airing
+5114,Fullmetal Alchemist: Brotherhood,Fullmetal Alchemist: Brotherhood,"Два брата-алхимика ищут философский камень, чтобы вернуть потерянные тела.",Action;Adventure;Drama,Bones,2009,64,Finished Airing
+32281,Kimi no Na wa,Your Name,"Парень и девушка из разных городов начинают меняться телами и искать друг друга.",Drama;Romance;Supernatural,CoMix Wave Films,2016,1,Finished Airing
+33352,Violet Evergarden,Violet Evergarden,"Бывшая солдатка становится писарем и учится понимать чувства через письма людей.",Drama;Fantasy,Kyoto Animation,2018,13,Finished Airing
+52991,Sousou no Frieren,Frieren: Beyond Journey's End,"Эльфийка-магичка отправляется в путь, чтобы лучше понять людей после смерти героя.",Adventure;Drama;Fantasy,Madhouse,2023,28,Finished Airing
+40748,Jujutsu Kaisen,Jujutsu Kaisen,"Студент глотает проклятый палец и попадает в мир магов, сражающихся с проклятиями.",Action;Supernatural;Fantasy,MAPPA,2020,24,Finished Airing
+33354,Mob Psycho 100,Mob Psycho 100,"Мощный экстрасенс-школьник пытается жить обычной жизнью и не потерять себя.",Action;Comedy;Supernatural,Bones,2016,12,Finished Airing
+37521,Vinland Saga,Vinland Saga,"Юный викинг ищет мести, но постепенно приходит к идее отказа от насилия.",Action;Adventure;Drama,Wit Studio,2019,24,Finished Airing
+777,,,Пустая строка без названия должна быть отклонена.,Action;Drama,,2010,12,Finished Airing
+888,Test Bad Year,Test Bad Year,Год вне допустимого диапазона.,Action,,1800,12,Finished Airing
+1535,Death Note (duplicate),Death Note,Дубликат mal_id должен быть пропущен.,Supernatural,Madhouse,2006,37,Finished Airing
